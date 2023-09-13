@@ -21,3 +21,6 @@ source-form = "free"
 
 [dependencies]
 enclose = { git = "https://github.com/degawa/enclose"}
+
+[dev-dependencies]
+fassert = { git = "https://github.com/degawa/fassert"}
