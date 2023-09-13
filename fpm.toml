@@ -1,0 +1,20 @@
+name = "fed"
+version = "0.1.0"
+license = "license"
+author = "Tomohiro Degawa"
+maintainer = "degawa.tomohiro@gmail.com"
+copyright = "Copyright 2023, Tomohiro Degawa"
+
+[build]
+auto-executables = false
+auto-tests = true
+auto-examples = true
+module-naming = false
+
+[install]
+library = false
+
+[fortran]
+implicit-typing = false
+implicit-external = false
+source-form = "free"
