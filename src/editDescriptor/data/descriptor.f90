@@ -1,5 +1,4 @@
 module fed_editDescriptor_data
-    use, intrinsic :: iso_fortran_env
     use :: fed_editDescriptor
     implicit none
     private
