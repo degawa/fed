@@ -4,6 +4,7 @@ program test_data_descriptor
     use :: fassert
     implicit none
 
+    print '(A)', "# Testing: data_edit_descriptor_type"
     call general_data_edit_descriptor_symbol_is_G()
 
 contains

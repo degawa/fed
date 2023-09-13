@@ -4,6 +4,7 @@ program test_editDescriptor
     use :: fassert
     implicit none
 
+    print '(A)', "# Testing: edit_descritpor_type"
     call get_returns_zero_length_string_when_no_desc_is_set()
     call get_returns_desc_when_desc_is_set()
     call destruct_deallocates_component_desc()
