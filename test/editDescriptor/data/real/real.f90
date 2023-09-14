@@ -3,7 +3,7 @@ program test_real_data_descriptor
     use :: fassert
     implicit none
 
-    print '(A)', "# Testing: real_edit_descriptor"
+    print '(A)', "# Testing: real edit descriptor"
     call real_returns_G0_when_no_arugment_passed()
     call real_returns_Fwm_when_passed_w_m()
     call real_fixes_w_when_w_is_lt_minimum()

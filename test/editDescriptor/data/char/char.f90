@@ -4,7 +4,7 @@ program test_char_data_descriptor
     use :: fassert
     implicit none
 
-    print '(A)', "# Testing: char_edit_descriptor_type"
+    print '(A)', "# Testing: char edit descriptor"
     call constructor_returns_char_edit_desc_instance()
     call char_returns_char_edit_desc_wo_width()
     call char_width_returns_char_edit_desc_w_width()

@@ -4,7 +4,7 @@ program test_integer_data_descriptor
     use :: fassert
     implicit none
 
-    print '(A)', "# Testing: integer_edit_descriptor"
+    print '(A)', "# Testing: integer edit descriptor"
     call int_spec_returns_wm_when_passed_valid_width_pad()
     call int_spec_suppress_m_to_w_when_m_is_gt_w()
     call int_spec_returns_0_when_passed_w_0_and_m()

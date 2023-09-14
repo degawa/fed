@@ -4,7 +4,7 @@ program test_logical_data_descriptor
     use :: fassert
     implicit none
 
-    print '(A)', "# Testing: logical_edit_descriptor_type"
+    print '(A)', "# Testing: logical edit descriptor"
     call constructor_returns_logical_edit_desc_instance()
     call logical_returns_logical_edit_desc_wo_width()
     call logical_width_returns_logical_edit_desc_w_width()
