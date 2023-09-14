@@ -4,6 +4,7 @@ program test_real_data_descriptor
     implicit none
 
     print '(A)', "# Testing: real edit descriptor"
+    call real_std_constructor_returns_real_std_descriptor_instance()
     call real_returns_G0_when_no_arugment_passed()
     call real_returns_Fwm_when_passed_w_m()
     call real_fixes_w_when_w_is_lt_minimum()
@@ -11,6 +12,30 @@ program test_real_data_descriptor
     call real_returns_G0_when_w_is_le_0()
 
 contains
+
+    subroutine real_std_constructor_returns_real_std_descriptor_instance()
+        use :: fed_editDescriptor
+        implicit none
+        class(edit_descriptor_type), allocatable :: desc
+        type(real_standard_edit_descriptor_type) :: type_mold
+
+        ! test
+        allocate (desc, source=real())
+        call assert_true(same_type_as(desc, type_mold), &
+                         "real() should return `real_standard_edit_descriptor_type` instance")
+
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=real(width=7, decimal_place_digits=4))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "real(width, decimal_place_digits) should return `real_standard_edit_descriptor_type` instance")
+
+        ! teardown
+        deallocate (desc)
+    end subroutine real_std_constructor_returns_real_std_descriptor_instance
+
     subroutine real_returns_G0_when_no_arugment_passed()
         implicit none
         type(real_standard_edit_descriptor_type) :: desc

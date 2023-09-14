@@ -13,6 +13,7 @@ program test_integer_data_descriptor
     call int_spec_returns_w_when_passed_valid_w_invalid_m()
     call int_spec_returns_0_when_passed_invalid_w_m()
 
+    call dec_int_constructor_returns_decimal_integer_descriptor_instance()
     call int_returns_Iwm_when_passed_w_m()
     call int_returns_I0_when_no_argument_passed()
     call int_returns_Iw_when_passed_w()
@@ -78,6 +79,37 @@ contains
         call assert_equal(int_spec(-5, -10), "0", &
                           "int_spec(-5, -10) should return '0'")
     end subroutine int_spec_returns_0_when_passed_invalid_w_m
+
+    subroutine dec_int_constructor_returns_decimal_integer_descriptor_instance()
+        use :: fed_editDescriptor
+        implicit none
+        class(edit_descriptor_type), allocatable :: desc
+        type(decimal_integer_edit_descriptor_type) :: type_mold
+
+        ! test
+        allocate (desc, source=int())
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int() should return `decimal_integer_edit_descriptor_type` instance")
+
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int(width=4))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int(width) should return `decimal_integer_edit_descriptor_type` instance")
+
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int(width=7, zero_padding_digit=6))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int(width, zero_padding_digit) should return `decimal_integer_edit_descriptor_type` instance")
+
+        ! teardown
+        deallocate (desc)
+    end subroutine dec_int_constructor_returns_decimal_integer_descriptor_instance
 
     subroutine int_returns_Iwm_when_passed_w_m()
         implicit none
