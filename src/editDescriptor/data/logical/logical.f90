@@ -23,28 +23,28 @@ contains
     !>logical_edit_descriptor_typeインスタンスを生成して返す．
     !>欄幅には`width`が用いられる．
     !>`width`が0以下の場合は，標準桁数が用いられる．
-    pure function construct_logical_edit_descriptor_w_width(width) result(new_logical_edit_descriptor)
+    pure function construct_logical_edit_descriptor_w_width(width) result(new_logical_desc)
         use :: stdlib_strings
         implicit none
         integer(int32), intent(in) :: width
             !! 欄幅(>0)
-        type(logical_edit_descriptor_type) :: new_logical_edit_descriptor
+        type(logical_edit_descriptor_type) :: new_logical_desc
             !! 生成されるlogical_edit_descriptor_typeインスタンス
 
         integer(int32) :: w
         w = width
         if (w <= 0) w = default_width
 
-        call new_logical_edit_descriptor%set(logical_edit_descriptor_symbol//to_string(w))
+        call new_logical_desc%set(logical_edit_descriptor_symbol//to_string(w))
     end function construct_logical_edit_descriptor_w_width
 
     !>logical_edit_descriptor_typeインスタンスを生成して返す．
     !>欄幅には標準桁数が用いられる．
-    pure function construct_logical_edit_descriptor() result(new_logical_edit_descriptor)
+    pure function construct_logical_edit_descriptor() result(new_logical_desc)
         implicit none
-        type(logical_edit_descriptor_type) :: new_logical_edit_descriptor
+        type(logical_edit_descriptor_type) :: new_logical_desc
             !! 生成されるlogical_edit_descriptor_typeインスタンス
 
-        new_logical_edit_descriptor = construct_logical_edit_descriptor_w_width(width=default_width)
+        new_logical_desc = construct_logical_edit_descriptor_w_width(width=default_width)
     end function construct_logical_edit_descriptor
 end module fed_editDescriptor_data_logical
