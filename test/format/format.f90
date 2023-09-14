@@ -1,4 +1,4 @@
-program ex_format
+program test_format
     use :: fed_format
     use :: fed_format_items
     use :: fed_format_item
@@ -63,4 +63,4 @@ contains
         call assert_equal(format(item(edit_descriptor_type("item"))), '(item)', &
                           "format(item) should return format specification")
     end subroutine construct_format_spec_by_format_item_returns_format_spec
-end program ex_format
+end program test_format
