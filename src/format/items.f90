@@ -165,7 +165,6 @@ contains
     !>書式項目並びと編集記述子から書式項目並びを生成して返す．
     !>結合演算子`//`をオーバーロードする．
     function catenate_items_desc(lhs, rhs) result(new_format_items)
-        use, intrinsic :: iso_fortran_env
         implicit none
         type(format_items_type), intent(in) :: lhs
             !! 結合演算子左辺の書式項目並び
@@ -180,7 +179,6 @@ contains
     !>書式項目並びと編集記述子から書式項目並びを生成して返す．
     !>結合演算子`//`をオーバーロードする．
     function catenate_items_items(lhs, rhs) result(format_items)
-        use, intrinsic :: iso_fortran_env
         implicit none
         type(format_items_type), intent(in) :: lhs
             !! 結合演算子左辺の書式項目並び
