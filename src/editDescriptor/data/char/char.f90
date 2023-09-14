@@ -33,7 +33,7 @@ contains
         use :: stdlib_strings
         implicit none
         integer(int32), intent(in) :: width
-            !! 欄幅
+            !! 欄幅(>0)
         type(char_edit_descriptor_type) :: new_char_edit_descriptor
             !! 生成されるchar_edit_descriptor_typeインスタンス
 
