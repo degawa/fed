@@ -155,7 +155,7 @@ contains
         class(edit_descriptor_type), intent(in) :: lhs
             !! 結合演算子左辺の編集記述子
         type(format_items_type), intent(in) :: rhs
-            !! 結合演算子右辺の書式項目並びを
+            !! 結合演算子右辺の書式項目並び
         type(format_items_type) :: new_format_items
             !! 生成された書式項目並び
 
@@ -168,7 +168,7 @@ contains
         use, intrinsic :: iso_fortran_env
         implicit none
         type(format_items_type), intent(in) :: lhs
-            !! 結合演算子左辺の書式項目並びを
+            !! 結合演算子左辺の書式項目並び
         class(edit_descriptor_type), intent(in) :: rhs
             !! 結合演算子右辺の編集記述子
         type(format_items_type) :: new_format_items
@@ -183,7 +183,9 @@ contains
         use, intrinsic :: iso_fortran_env
         implicit none
         type(format_items_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目並び
         type(format_items_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目並び
 
         type(format_items_type) :: format_items
 
