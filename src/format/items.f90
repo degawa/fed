@@ -186,8 +186,8 @@ contains
             !! 結合演算子左辺の書式項目並び
         type(format_items_type), intent(in) :: rhs
             !! 結合演算子右辺の書式項目並び
-
         type(format_items_type) :: format_items
+            !! 生成された書式項目並び
 
         format_items%item = [lhs%item, rhs%item]
     end function catenate_items_items
