@@ -2,6 +2,7 @@ module fed_format_items
     use, intrinsic :: iso_fortran_env
     use :: fed_format_item
     use :: fed_editDescriptor
+    use :: fed_editDescriptor_characterString
     implicit none
     private
     public :: items
@@ -35,10 +36,25 @@ module fed_format_items
     !>書式項目並びを生成する演算子
     interface operator(//)
         procedure :: catenate_desc_desc
+        procedure :: catenate_desc_item
         procedure :: catenate_desc_items
+        procedure :: catenate_desc_char
+
+        procedure :: catenate_item_desc
+        procedure :: catenate_item_item
+        procedure :: catenate_item_items
+        procedure :: catenate_item_char
+
         procedure :: catenate_items_desc
+        procedure :: catenate_items_item
         procedure :: catenate_items_items
+        procedure :: catenate_items_char
+
+        procedure :: catenate_char_desc
+        procedure :: catenate_char_item
+        procedure :: catenate_char_items
     end interface
+
 contains
     !>編集記述子から書式項目並びformat_item_typeのインスタンスを生成して返す．
     function construct_format_items_w_descriptor(edit_descriptor) result(new_format_items)
@@ -148,6 +164,20 @@ contains
         new_format_items%item = [item(lhs), item(rhs)]
     end function catenate_desc_desc
 
+    !>編集記述子と書式項目から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_desc_item(lhs, rhs) result(new_format_items)
+        implicit none
+        class(edit_descriptor_type), intent(in) :: lhs
+            !! 結合演算子左辺の編集記述子
+        type(format_item_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [item(lhs), rhs]
+    end function catenate_desc_item
+
     !>編集記述子と書式項目並びから書式項目並びを生成して返す．
     !>結合演算子`//`をオーバーロードする．
     function catenate_desc_items(lhs, rhs) result(new_format_items)
@@ -161,6 +191,20 @@ contains
 
         new_format_items%item = [item(lhs), rhs%item]
     end function catenate_desc_items
+
+    !>編集記述子と文字列（文字列編集記述子）から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_desc_char(lhs, rhs) result(new_format_items)
+        implicit none
+        class(edit_descriptor_type), intent(in) :: lhs
+            !! 結合演算子左辺の編集記述子
+        character(*), intent(in) :: rhs
+            !! 文字列
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [item(lhs), item(str(rhs))]
+    end function catenate_desc_char
 
     !>書式項目並びと編集記述子から書式項目並びを生成して返す．
     !>結合演算子`//`をオーバーロードする．
@@ -176,7 +220,21 @@ contains
         new_format_items%item = [lhs%item, item(rhs)]
     end function catenate_items_desc
 
-    !>書式項目並びと編集記述子から書式項目並びを生成して返す．
+    !>書式項目並びと書式項目から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_items_item(lhs, rhs) result(format_items)
+        implicit none
+        type(format_items_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目並び
+        type(format_item_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目
+        type(format_items_type) :: format_items
+            !! 生成された書式項目並び
+
+        format_items%item = [lhs%item, rhs]
+    end function catenate_items_item
+
+    !>書式項目並びと書式項目並びから書式項目並びを生成して返す．
     !>結合演算子`//`をオーバーロードする．
     function catenate_items_items(lhs, rhs) result(format_items)
         implicit none
@@ -189,4 +247,116 @@ contains
 
         format_items%item = [lhs%item, rhs%item]
     end function catenate_items_items
+
+    !>書式項目並びと文字列（文字列編集記述子）から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_items_char(lhs, rhs) result(new_format_items)
+        implicit none
+        type(format_items_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目並び
+        character(*), intent(in) :: rhs
+            !! 文字列
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [lhs%item, item(str(rhs))]
+    end function catenate_items_char
+
+    !>書式項目と編集記述子から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_item_desc(lhs, rhs) result(new_format_items)
+        implicit none
+        type(format_item_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目
+        class(edit_descriptor_type), intent(in) :: rhs
+            !! 結合演算子右辺の編集記述子
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [lhs, item(rhs)]
+    end function catenate_item_desc
+
+    !>書式項目と書式項目から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_item_item(lhs, rhs) result(format_items)
+        implicit none
+        type(format_item_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目
+        type(format_item_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目
+        type(format_items_type) :: format_items
+            !! 生成された書式項目並び
+
+        format_items%item = [lhs, rhs]
+    end function catenate_item_item
+
+    !>書式項目と書式項目並びから書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_item_items(lhs, rhs) result(format_items)
+        implicit none
+        type(format_item_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目
+        type(format_items_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目並び
+        type(format_items_type) :: format_items
+            !! 生成された書式項目並び
+
+        format_items%item = [lhs, rhs%item]
+    end function catenate_item_items
+
+    !>書式項目と文字列（文字列編集記述子）から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_item_char(lhs, rhs) result(new_format_items)
+        implicit none
+        type(format_item_type), intent(in) :: lhs
+            !! 結合演算子左辺の書式項目
+        character(*), intent(in) :: rhs
+            !! 文字列
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [lhs, item(str(rhs))]
+    end function catenate_item_char
+
+    !>文字列（文字列編集記述子）と編集記述子から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_char_desc(lhs, rhs) result(new_format_items)
+        implicit none
+        character(*), intent(in) :: lhs
+            !! 文字列
+        class(edit_descriptor_type), intent(in) :: rhs
+            !! 結合演算子右辺の編集記述子
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [item(str(lhs)), item(rhs)]
+    end function catenate_char_desc
+
+    !>文字列（文字列編集記述子）と書式項目から書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_char_item(lhs, rhs) result(new_format_items)
+        implicit none
+        character(*), intent(in) :: lhs
+            !! 文字列
+        type(format_item_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目並び
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [item(str(lhs)), rhs]
+    end function catenate_char_item
+
+    !>文字列（文字列編集記述子）と書式項目並びから書式項目並びを生成して返す．
+    !>結合演算子`//`をオーバーロードする．
+    function catenate_char_items(lhs, rhs) result(new_format_items)
+        implicit none
+        character(*), intent(in) :: lhs
+            !! 文字列
+        type(format_items_type), intent(in) :: rhs
+            !! 結合演算子右辺の書式項目並び
+        type(format_items_type) :: new_format_items
+            !! 生成された書式項目並び
+
+        new_format_items%item = [item(str(lhs)), rhs%item]
+    end function catenate_char_items
 end module fed_format_items
