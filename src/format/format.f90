@@ -36,14 +36,14 @@ contains
     end function construct_format_specifier
 
     !>書式項目並びから書式仕様を文字列で生成して返す．
-    !>書式項目は，区切り文字で区切られる．
+    !>書式項目は，区切り文字（`"`以外）で区切られる．
     pure function construct_format_specifier_w_sep(format_items, separator) result(format_spec)
         use :: strings_enclose
         implicit none
         type(format_items_type), intent(in) :: format_items
             !! 書式項目並び
         character(*), intent(in) :: separator
-            !! 区切り文字
+            !! 区切り文字（`"`以外）
         character(:), allocatable :: format_spec
             !! 書式仕様
 
