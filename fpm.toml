@@ -20,6 +20,7 @@ implicit-external = false
 source-form = "free"
 
 [dependencies]
+stdlib = "*"
 enclose = { git = "https://github.com/degawa/enclose"}
 
 [dev-dependencies]
