@@ -8,7 +8,7 @@ module fed_editDescriptor_data_real_standard
     character(*), private, parameter :: real_starndard_edit_descriptor_symbol = "F"
         !! F形（標準形式）編集記述子に用いられる英字定数
 
-    !>標準形式の実数の編集記述子取り扱う派生型．
+    !>標準形式の実数の編集記述子を取り扱う派生型．
     type, public, extends(real_edit_descriptor_type) :: real_standard_edit_descriptor_type
     end type real_standard_edit_descriptor_type
 
