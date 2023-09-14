@@ -30,6 +30,7 @@ module fed_format_item
     interface item
         procedure :: construct_format_item
     end interface
+
 contains
     !>編集記述子からformat_item_typeインスタンスを生成して返却する．
     function construct_format_item(edit_descriptor) result(new_format_item)
