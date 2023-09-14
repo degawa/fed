@@ -21,4 +21,16 @@ program ex_char
 
     print format(char()//char()//char(), separator="//"), "qwert", "asdf", "zx"
     !qwert//asdf//zx
+
+    print *, format(char())
+    !(A)
+
+    print *, format(char(3))
+    !(A3)
+
+    print *, format(char()//char()//char())
+    !(A,A,A)
+
+    print *, format(char()//char()//char(), separator="//")
+    !(A,"//",A,"//",A)
 end program ex_char
