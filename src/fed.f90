@@ -6,6 +6,7 @@ module fed
     use :: fed_editDescriptor_data_complex_standard, only:complex
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
+    use :: fed_repeat, only:repeat
     implicit none
     private
     ! procedures
@@ -15,6 +16,7 @@ module fed
     public :: char
     public :: logical
     public :: format
+    public :: repeat
 
     ! operators
     public :: operator(//)
