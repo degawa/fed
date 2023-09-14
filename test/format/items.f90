@@ -2,6 +2,7 @@ program test_format_items
     use :: fed_format_items
     use :: fed_format_item
     use :: fed_editDescriptor
+    use :: fed_editDescriptor_characterString
     use :: fassert
     implicit none
 
@@ -73,8 +74,10 @@ contains
         implicit none
         type(format_items_type) :: itms
         type(edit_descriptor_type) :: desc_lhs, desc_rhs
+        type(format_item_type) :: itm_lhs, itm_rhs
         type(format_items_type) :: itms_lhs, itms_rhs
 
+        !--- desc//desc
         ! setup
         desc_lhs = edit_descriptor_type("descriptor at lhs")
         desc_rhs = edit_descriptor_type("descriptor at rhs")
@@ -94,25 +97,27 @@ contains
         call desc_lhs%destruct()
         call desc_rhs%destruct()
 
+        !--- desc//item
         ! setup
-        itms_lhs = items(edit_descriptor_type("format item at lhs"))
-        itms_rhs = items(edit_descriptor_type("format item at rhs"))
+        desc_lhs = edit_descriptor_type("descriptor at lhs")
+        itm_rhs = item(edit_descriptor_type("format item at rhs"))
 
         ! test
-        itms = itms_lhs//itms_rhs
+        itms = desc_lhs//itm_rhs
         call assert_equal(itms%get_number_of_items(), 2, &
-                          "num of items in the result of items//items op is the sum of the num of items " &
+                          "num of items in the result of desc//item op is the sum of the num of items " &
                           //"on the left and right side of //")
-        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
-                          "edit descriptor for item no.1 in the result of items//items op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(1), "descriptor at lhs", &
+                          "edit descriptor for item no.1 in the result of desc//item op is the same as that of the lhs")
         call assert_equal(itms%get_edit_descriptor_at(2), "format item at rhs", &
-                          "edit descriptor for item no.2 in the result of items//items op is the same as that of the rhs")
+                          "edit descriptor for item no.2 in the result of desc//item op is the same as that of the rhs")
 
         ! teardown
         call itms%destruct()
-        call itms_lhs%destruct()
-        call itms_rhs%destruct()
+        call desc_lhs%destruct()
+        call itm_rhs%destruct()
 
+        !--- desc//items
         ! setup
         desc_lhs = edit_descriptor_type("descriptor at lhs")
         itms_rhs = items(edit_descriptor_type("format item at rhs"))
@@ -132,6 +137,25 @@ contains
         call desc_lhs%destruct()
         call itms_rhs%destruct()
 
+        !--- desc//char
+        ! setup
+        desc_lhs = edit_descriptor_type("descriptor at lhs")
+
+        ! test
+        itms = desc_lhs//"string at rhs"
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of desc//char op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "descriptor at lhs", &
+                          "edit descriptor for item no.1 in the result of desc//char op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), '"string at rhs"', &
+                          "edit descriptor for item no.2 in the result of desc//char op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call desc_lhs%destruct()
+
+        !--- items//desc
         ! setup
         itms_lhs = items(edit_descriptor_type("format item at lhs"))
         desc_rhs = edit_descriptor_type("descriptor at rhs")
@@ -151,6 +175,198 @@ contains
         call itms_lhs%destruct()
         call desc_rhs%destruct()
 
+        !--- items//item
+        ! setup
+        itms_lhs = items(edit_descriptor_type("format item at lhs"))
+        itm_rhs = item(edit_descriptor_type("format item at rhs"))
+
+        ! test
+        itms = itms_lhs//itm_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of items//item op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of items//item op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at rhs", &
+                          "edit descriptor for item no.2 in the result of items//item op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itms_lhs%destruct()
+        call itm_rhs%destruct()
+
+        !--- items//items
+        ! setup
+        itms_lhs = items(edit_descriptor_type("format item at lhs"))
+        itms_rhs = items(edit_descriptor_type("format item at rhs"))
+
+        ! test
+        itms = itms_lhs//itms_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of items//items op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of items//items op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at rhs", &
+                          "edit descriptor for item no.2 in the result of items//items op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itms_lhs%destruct()
+        call itms_rhs%destruct()
+
+        !--- items//char
+        ! setup
+        itms_lhs = items(edit_descriptor_type("format item at lhs"))
+
+        ! test
+        itms = itms_lhs//"string at rhs"
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of items//char op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of items//char op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), '"string at rhs"', &
+                          "edit descriptor for item no.2 in the result of items//char op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itms_lhs%destruct()
+        call itms_rhs%destruct()
+
+        !--- item//desc
+        ! setup
+        itm_lhs = item(edit_descriptor_type("format item at lhs"))
+        desc_rhs = edit_descriptor_type("descriptor at rhs")
+
+        ! test
+        itms = itm_lhs//desc_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of item//desc op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of item//desc op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "descriptor at rhs", &
+                          "edit descriptor for item no.2 in the result of item//desc op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itm_lhs%destruct()
+        call desc_rhs%destruct()
+
+        !--- item//item
+        ! setup
+        itm_lhs = item(edit_descriptor_type("format item at lhs"))
+        itm_rhs = item(edit_descriptor_type("format item at rhs"))
+
+        ! test
+        itms = itm_lhs//itm_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of item//item op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of item//item op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at rhs", &
+                          "edit descriptor for item no.2 in the result of item//item op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itm_lhs%destruct()
+        call itm_rhs%destruct()
+
+        !--- item//items
+        ! setup
+        itm_lhs = item(edit_descriptor_type("format item at lhs"))
+        itms_rhs = items(edit_descriptor_type("format item at rhs"))
+
+        ! test
+        itms = itm_lhs//itms_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of item//items op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of item//items op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at rhs", &
+                          "edit descriptor for item no.2 in the result of item//items op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itm_lhs%destruct()
+        call itms_rhs%destruct()
+
+        !--- item//char
+        ! setup
+        itm_lhs = item(edit_descriptor_type("format item at lhs"))
+
+        ! test
+        itms = itm_lhs//"string at rhs"
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of item//char op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), "format item at lhs", &
+                          "edit descriptor for item no.1 in the result of item//char op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), '"string at rhs"', &
+                          "edit descriptor for item no.2 in the result of item//char op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itm_lhs%destruct()
+
+        !--- char//desc
+        ! setup
+        desc_rhs = edit_descriptor_type("descriptor at rhs")
+
+        ! test
+        itms = "string at lhs"//desc_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of char//desc op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), '"string at lhs"', &
+                          "edit descriptor for item no.1 in the result of char//desc op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "descriptor at rhs", &
+                          "edit descriptor for item no.2 in the result of char//desc op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call desc_rhs%destruct()
+
+        !--- char//item
+        ! setup
+        itm_rhs = item(edit_descriptor_type("format item at lhs"))
+
+        ! test
+        itms = "string at lhs"//itm_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of char//item op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), '"string at lhs"', &
+                          "edit descriptor for item no.1 in the result of char//item op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at lhs", &
+                          "edit descriptor for item no.2 in the result of char//item op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itm_rhs%destruct()
+
+        !--- char//items
+        ! setup
+        itms_rhs = items(edit_descriptor_type("format item at lhs"))
+
+        ! test
+        itms = "string at lhs"//itms_rhs
+        call assert_equal(itms%get_number_of_items(), 2, &
+                          "num of items in the result of char//items op is the sum of the num of items " &
+                          //"on the left and right side of //")
+        call assert_equal(itms%get_edit_descriptor_at(1), '"string at lhs"', &
+                          "edit descriptor for item no.1 in the result of char//items op is the same as that of the lhs")
+        call assert_equal(itms%get_edit_descriptor_at(2), "format item at lhs", &
+                          "edit descriptor for item no.2 in the result of char//items op is the same as that of the rhs")
+
+        ! teardown
+        call itms%destruct()
+        call itms_rhs%destruct()
+
+        !--- items//items
         ! setup
         desc_lhs = edit_descriptor_type("descriptor1")
         desc_rhs = edit_descriptor_type("descriptor2")
