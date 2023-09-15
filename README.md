@@ -6,7 +6,7 @@ I am fed up with Fortran's edit descriptors.
 - Unmemorable number of edit descriptors and their features
 - Switching between apostrophes `'` and double quotation marks `"` to describe the format specification
 - A mismatch between the number of variables and the number of edit descriptors, especially when writing complex type variables
-- Repetition of commas (`,`) and quotation marks (`'` or `"`) like ``("(",G0,",",G0,")")'`
+- Repetition of commas (`,`) and quotation marks (`'` or `"`) like `("(",G0,",",G0,")")'`
 - etc.
 
 This library provides procedures and an operator for generating format specifications in a more human-understandable manner.
