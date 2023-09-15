@@ -3,7 +3,7 @@ program demo
     use :: fed
     implicit none
 
-    character(:), allocatable :: fmt_bnd
+    character(:), allocatable :: fmt_bnd, stat, memsize
     integer(int32), allocatable :: i(:, :), j(:, :)
 
     ! combine edit descriptors for different types
@@ -14,23 +14,18 @@ program demo
     allocate (i(0:10, -2:3))
     allocate (j(-6:0, -20:-10))
 
-    print format("allocataion status: "//logical()), allocated(i)
-    print format("memory size: "//int()//" bits"), storage_size(i)*size(i)
-    !allocataion status: T
-    !storage size: 2112 bits
-
     ! a format-specifier can be easily reuse by storing in a string
-    fmt_bnd = format("array bounds = ["//repeat(int(4), 2)//"] x ["//repeat(int(4), 2)//"]")
-    print fmt_bnd, lbound(i), ubound(i)
-    !array bounds = [   0  -2] x [  10   3]
+    stat = format("allocataion status: "//logical())
+    memsize = format("memory size: "//int()//" bits")
+    fmt_bnd = format("array bounds = ["//repeat(int(4), rank(i))//"] x ["//repeat(int(4), rank(i))//"]")
 
-    print format("allocataion status: "//logical()), allocated(j)
-    print format("memory size: "//int()//" bits"), storage_size(j)*size(j)
-    !allocataion status: T
-    !storage size: 2464 bits
+    print stat, allocated(i) !allocataion status: T
+    print memsize, storage_size(i)*size(i) !storage size: 2112 bits
+    print fmt_bnd, lbound(i), ubound(i) !array bounds = [   0  -2] x [  10   3]
 
-    print fmt_bnd, lbound(j), ubound(j)
-    !array bounds = [  -5 -20] x [   0 -10]
+    print stat, allocated(j) !allocataion status: T
+    print memsize, storage_size(j)*size(j) !storage size: 2464 bits
+    print fmt_bnd, lbound(j), ubound(j) !array bounds = [  -5 -20] x [   0 -10]
 
     deallocate (i)
     deallocate (j)
