@@ -12,6 +12,10 @@ module fed
     use :: fed_editDescriptor_data_real_engineering, only:real_eng
     use :: fed_editDescriptor_data_real_facade, only:real, exp_form, sci_form, eng_form
     use :: fed_editDescriptor_data_complex_standard, only:complex
+    use :: fed_editDescriptor_data_complex_exponential, only:complex_exp
+    use :: fed_editDescriptor_data_complex_scientific, only:complex_sci
+    use :: fed_editDescriptor_data_complex_engineering, only:complex_eng
+    use :: fed_editDescriptor_data_complex_facade, only:complex
     use :: fed_editDescriptor_characterString, only:str
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
@@ -38,4 +42,5 @@ module fed
     ! procedures opened to public for aliasing
     public :: int_bin, int_oct, int_hex
     public :: real_exp, real_sci, real_eng
+    public :: complex_exp, complex_sci, complex_eng
 end module fed
