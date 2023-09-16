@@ -30,12 +30,12 @@ This library provides procedures and an operator for generating format specifica
     - [x] `EN` (engineering form)
     - [x] `ES` (scientific form)
     - [ ] ~~`EX` (hexadecimal-significand form)~~
-- [ ] complex
+- [x] complex
     - [x] `G` (general)
     - [x] `F` (standard form)
-    - [ ] `E` (exponential form)
-    - [ ] `EN` (engineering form)
-    - [ ] `ES` (scientific form)
+    - [x] `E` (exponential form)
+    - [x] `EN` (engineering form)
+    - [x] `ES` (scientific form)
     - [ ] ~~`EX` (hexadecimal-significand form)~~
 - [ ] user-defined type
 - [ ] arrays
@@ -63,11 +63,11 @@ The current version of fed provides the following functions and an operator:
 ### Procedures
 |                       procedure                        |                                                                            functionality                                                                             |
 | :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `char([width])`                                        | generates a edit descriptor for character. <br>`A<width>` or `A`|
-| `logical([width])`                                     | generates a edit descriptor for logiacl. <br>`L<width>`|
-| `int([form={bin_digits/oct_digits/hex_digits},][width,[zero_padding_digit]])`| generates a edit descriptor for integer. <br>`I0`, `I<width>`, or `I<width>.<zero_padding_digit>`<br>`B0`, `B<width>.<width>`, or `B<width>.<zero_padding_digit>`<br>`O0`, `O<width>.<width>`, or `O<width>.<zero_padding_digit>`<br>`Z0`, `Z<width>.<width>`, or `Z<width>.<zero_padding_digit>`|
-| `real([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`| generates a edit descriptor for real. <br>`F<width>.<decimal_place_digits>` or `G0`<br>`E<width>.<decimal_place_digits>`, or `E<width>.<decimal_place_digits>E<exponent_digits>`<br>`ES<width>.<decimal_place_digits>`, or `ES<width>.<decimal_place_digits>E<exponent_digits>`<br>`EN<width>.<decimal_place_digits>`, or `EN<width>.<decimal_place_digits>E<exponent_digits>`|
-| `complex([width, decimal_place_digits])`| generates a sequene of edit descriptors for writing complex. <br>`"(",F<width>.<decimal_place_digits>,",",F<width>.<decimal_place_digits>,")"` or `"(",G0,",",G0,")"`|
+| `char([width])`                                        |generates a edit descriptor for character. <br>`A<width>` or `A`|
+| `logical([width])`                                     |generates a edit descriptor for logiacl. <br>`L<width>`|
+| `int([form={bin_digits/oct_digits/hex_digits},][width,[zero_padding_digit]])`|generates a edit descriptor for integer. <br>`I0`<br>`I<width>`<br>`I<width>.<zero_padding_digit>`<br>`B0`<br>`B<width>.<width>`<br>`B<width>.<zero_padding_digit>`<br>`O0`<br>`O<width>.<width>`<br>`O<width>.<zero_padding_digit>`<br>`Z0`<br>`Z<width>.<width>`<br>`Z<width>.<zero_padding_digit>`|
+| `real([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a edit descriptor for real. <br>`G0`<br>`F<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>E<exponent_digits>`<br>`ES<width>.<decimal_place_digits>`<br>`ES<width>.<decimal_place_digits>E<exponent_digits>`<br>`EN<width>.<decimal_place_digits>`<br>`EN<width>.<decimal_place_digits>E<exponent_digits>`|
+| `complex([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a sequene of edit descriptors for writing complex. <br>`"(",G0,",",G0,")"`<br>`"(",F<width>.<decimal_place_digits>,",",F<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>,",",E<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>E<exponent_digits>,",",E<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>,",",ES<width>.<decimal_place_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>E<exponent_digits>,",",ES<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>,",",EN<width>.<decimal_place_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`|
 | `str(character_string)`                                |generates a character string edit descriptor. |
 | `format(format_items[, separator])`                    |generates a format specification as character.|
 | `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>`repeat(repeat(...))` is not supported yet.|
