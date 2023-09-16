@@ -43,6 +43,7 @@ contains
         type(real_exponential_edit_descriptor_type) :: new_exp_spec
             !!　生成されるインスタンス
 
-        new_exp_spec = construct_exponential_real_spec_w_width_decimal_exp(0, 0, 0)
+        ! 標準値となるように，不正な値を与える
+        new_exp_spec = construct_exponential_real_spec_w_width_decimal_exp(0, -1, -1)
     end function construct_exponential_real_spec
 end module fed_editDescriptor_data_real_exponential
