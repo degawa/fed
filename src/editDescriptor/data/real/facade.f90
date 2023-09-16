@@ -12,7 +12,7 @@ module fed_editDescriptor_data_real_facade
     public :: real
 
     !>実数の表示形式を表す列挙型
-    type, private, extends(enum_atype) :: real_form_type
+    type, public, extends(enum_atype) :: real_form_type
     end type real_form_type
 
     enum, bind(c)
