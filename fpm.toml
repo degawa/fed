@@ -22,6 +22,7 @@ source-form = "free"
 [dependencies]
 stdlib = "*"
 enclose = { git = "https://github.com/degawa/enclose"}
+enumul = { git = "https://github.com/degawa/enumul"}
 
 [dev-dependencies]
 fassert = { git = "https://github.com/degawa/fassert"}
