@@ -2,6 +2,7 @@ program test_integer_data_descriptor
     use :: fed_editDescriptor_data_integer
     use :: fed_editDescriptor_data_integer_decimal
     use :: fed_editDescriptor_data_integer_binary
+    use :: fed_editDescriptor_data_integer_octal
     use :: fassert
     implicit none
 
@@ -304,4 +305,112 @@ contains
         ! teardown
         call desc%destruct()
     end subroutine int_bin_returns_Bww_when_passed_w
+
+    subroutine oct_int_constructor_returns_octal_integer_descriptor_instance()
+        use :: fed_editDescriptor
+        implicit none
+        class(edit_descriptor_type), allocatable :: desc
+        type(octal_integer_edit_descriptor_type) :: type_mold
+
+        ! test
+        allocate (desc, source=int_oct())
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_oct() should return `octal_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int_oct(width=8))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_oct(width) should return `octal_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int_oct(width=7, zero_padding_digit=6))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_oct(width, zero_padding_digit) should return `octal_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+    end subroutine oct_int_constructor_returns_octal_integer_descriptor_instance
+
+    subroutine int_oct_returns_Owm_when_passed_w_m()
+        implicit none
+        type(octal_integer_edit_descriptor_type) :: desc
+
+        desc = int_oct(2, 1)
+        call assert_equal(desc%get(), "O2.1", &
+                          "int_oct(2, 1) should return 'O2.1'")
+        desc = int_oct(4, 2)
+        call assert_equal(desc%get(), "O4.2", &
+                          "int_oct(4, 2) should return 'O4.2'")
+        desc = int_oct(14, 14)
+        call assert_equal(desc%get(), "O14.14", &
+                          "int_oct(14, 14) should return 'O14.14'")
+
+        desc = int_oct(2, 3)
+        call assert_equal(desc%get(), "O2.2", &
+                          "int_oct(2, 3) should return 'O2.2'")
+        desc = int_oct(6, 8)
+        call assert_equal(desc%get(), "O6.6", &
+                          "int_oct(6, 8) should return 'O6.6'")
+
+        desc = int_oct(0, 3)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(0, 3) should return 'O0'")
+
+        desc = int_oct(5, 0)
+        call assert_equal(desc%get(), "O5", &
+                          "int_oct(5, 0) should return 'O5'")
+
+        desc = int_oct(-1, 3)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(-1, 3) should return 'O0'")
+
+        desc = int_oct(8, -1)
+        call assert_equal(desc%get(), "O8", &
+                          "int_oct(8, -1) should return 'O8'")
+
+        desc = int_oct(-2, -1)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(-2, -1) should return 'O0'")
+        desc = int_oct(-5, -10)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(-5, -10) should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_returns_Owm_when_passed_w_m
+
+    subroutine int_oct_returns_O0_when_no_argument_passed()
+        implicit none
+        type(octal_integer_edit_descriptor_type) :: desc
+
+        desc = int_oct()
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct() should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_returns_O0_when_no_argument_passed
+
+    subroutine int_oct_returns_Oww_when_passed_w()
+        implicit none
+        type(octal_integer_edit_descriptor_type) :: desc
+
+        desc = int_oct(2)
+        call assert_equal(desc%get(), "O2.2", &
+                          "int_oct(2) should return 'O2.2'")
+
+        desc = int_oct(0)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(0) should return 'O0'")
+
+        desc = int_oct(-1)
+        call assert_equal(desc%get(), "O0", &
+                          "int_oct(-1) should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_returns_Oww_when_passed_w
 end program test_integer_data_descriptor
