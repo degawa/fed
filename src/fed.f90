@@ -7,6 +7,11 @@ module fed
     use :: fed_editDescriptor_data_integer_hexadecimal, only:int_hex
     use :: fed_editDescriptor_data_integer_facade, only:int, bin_digits, oct_digits, hex_digits
     use :: fed_editDescriptor_data_real_standard, only:real
+    use :: fed_editDescriptor_data_real_exponential, only:real_exp
+    use :: fed_editDescriptor_data_real_scientific, only:real_sci
+    use :: fed_editDescriptor_data_real_engineering, only:real_eng
+    use :: fed_editDescriptor_data_real_hexadecimalSignificand, only:real_hex
+    use :: fed_editDescriptor_data_real_facade, only:real, exp_form, sci_form, eng_form, hex_form
     use :: fed_editDescriptor_data_complex_standard, only:complex
     use :: fed_editDescriptor_characterString, only:str
     use :: fed_format, only:format
@@ -26,10 +31,12 @@ module fed
 
     ! enumerators
     public :: bin_digits, oct_digits, hex_digits
+    public :: exp_form, sci_form, eng_form, hex_form
 
     ! operators
     public :: operator(//)
 
     ! procedures opened to public for aliasing
     public :: int_bin, int_oct, int_hex
+    public :: real_exp, real_sci, real_eng, real_hex
 end module fed
