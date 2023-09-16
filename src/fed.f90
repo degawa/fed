@@ -10,7 +10,6 @@ module fed
     use :: fed_editDescriptor_data_real_exponential, only:real_exp
     use :: fed_editDescriptor_data_real_scientific, only:real_sci
     use :: fed_editDescriptor_data_real_engineering, only:real_eng
-    use :: fed_editDescriptor_data_real_hexadecimalSignificand, only:real_hex
     use :: fed_editDescriptor_data_real_facade, only:real, exp_form, sci_form, eng_form
     use :: fed_editDescriptor_data_complex_standard, only:complex
     use :: fed_editDescriptor_characterString, only:str

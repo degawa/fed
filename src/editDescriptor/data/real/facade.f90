@@ -5,7 +5,6 @@ module fed_editDescriptor_data_real_facade
     use :: fed_editDescriptor_data_real_exponential
     use :: fed_editDescriptor_data_real_engineering
     use :: fed_editDescriptor_data_real_scientific
-    use :: fed_editDescriptor_data_real_hexadecimalSignificand
     use :: fed_editDescriptor_data_real_standard
     use :: enumul
     implicit none
