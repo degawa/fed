@@ -1,6 +1,7 @@
 program test_integer_data_descriptor
     use :: fed_editDescriptor_data_integer
     use :: fed_editDescriptor_data_integer_decimal
+    use :: fed_editDescriptor_data_integer_binary
     use :: fassert
     implicit none
 
@@ -17,6 +18,11 @@ program test_integer_data_descriptor
     call int_returns_Iwm_when_passed_w_m()
     call int_returns_I0_when_no_argument_passed()
     call int_returns_Iw_when_passed_w()
+
+    call bin_int_constructor_returns_binary_integer_descriptor_instance()
+    call int_bin_returns_Bwm_when_passed_w_m()
+    call int_bin_returns_B0_when_no_argument_passed()
+    call int_bin_returns_Bww_when_passed_w()
 
 contains
     subroutine int_spec_returns_wm_when_passed_valid_width_pad()
@@ -190,4 +196,112 @@ contains
         ! teardown
         call desc%destruct()
     end subroutine int_returns_Iw_when_passed_w
+
+    subroutine bin_int_constructor_returns_binary_integer_descriptor_instance()
+        use :: fed_editDescriptor
+        implicit none
+        class(edit_descriptor_type), allocatable :: desc
+        type(binary_integer_edit_descriptor_type) :: type_mold
+
+        ! test
+        allocate (desc, source=int_bin())
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_bin() should return `binary_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int_bin(width=8))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_bin(width) should return `binary_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=int_bin(width=7, zero_padding_digit=6))
+        call assert_true(same_type_as(desc, type_mold), &
+                         "int_bin(width, zero_padding_digit) should return `binary_integer_edit_descriptor_type` instance")
+        ! teardown
+        deallocate (desc)
+    end subroutine bin_int_constructor_returns_binary_integer_descriptor_instance
+
+    subroutine int_bin_returns_Bwm_when_passed_w_m()
+        implicit none
+        type(binary_integer_edit_descriptor_type) :: desc
+
+        desc = int_bin(2, 1)
+        call assert_equal(desc%get(), "B2.1", &
+                          "int_bin(2, 1) should return 'B2.1'")
+        desc = int_bin(4, 2)
+        call assert_equal(desc%get(), "B4.2", &
+                          "int_bin(4, 2) should return 'B4.2'")
+        desc = int_bin(14, 14)
+        call assert_equal(desc%get(), "B14.14", &
+                          "int_bin(14, 14) should return 'B14.14'")
+
+        desc = int_bin(2, 3)
+        call assert_equal(desc%get(), "B2.2", &
+                          "int_bin(2, 3) should return 'B2.2'")
+        desc = int_bin(6, 8)
+        call assert_equal(desc%get(), "B6.6", &
+                          "int_bin(6, 8) should return 'B6.6'")
+
+        desc = int_bin(0, 3)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(0, 3) should return 'B0'")
+
+        desc = int_bin(5, 0)
+        call assert_equal(desc%get(), "B5", &
+                          "int_bin(5, 0) should return 'B5'")
+
+        desc = int_bin(-1, 3)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(-1, 3) should return 'B0'")
+
+        desc = int_bin(8, -1)
+        call assert_equal(desc%get(), "B8", &
+                          "int_bin(8, -1) should return 'B8'")
+
+        desc = int_bin(-2, -1)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(-2, -1) should return 'B0'")
+        desc = int_bin(-5, -10)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(-5, -10) should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_returns_Bwm_when_passed_w_m
+
+    subroutine int_bin_returns_B0_when_no_argument_passed()
+        implicit none
+        type(binary_integer_edit_descriptor_type) :: desc
+
+        desc = int_bin()
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin() should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_returns_B0_when_no_argument_passed
+
+    subroutine int_bin_returns_Bww_when_passed_w()
+        implicit none
+        type(binary_integer_edit_descriptor_type) :: desc
+
+        desc = int_bin(2)
+        call assert_equal(desc%get(), "B2.2", &
+                          "int_bin(2) should return 'B2.2'")
+
+        desc = int_bin(0)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(0) should return 'B0'")
+
+        desc = int_bin(-1)
+        call assert_equal(desc%get(), "B0", &
+                          "int_bin(-1) should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_returns_Bww_when_passed_w
 end program test_integer_data_descriptor
