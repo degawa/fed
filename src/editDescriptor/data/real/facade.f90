@@ -29,8 +29,6 @@ module fed_editDescriptor_data_real_facade
         !! 科学形式の実数を表す列挙子
     type(real_form_type), public, parameter :: eng_form = real_form_type(Form_Engineering)
         !! 工学形式の実数を表す列挙子
-    type(real_form_type), public, parameter :: hex_form = real_form_type(Form_Hexadecimal_Significand)
-        !! 16進数形式の実数を表す列挙子
 
     interface real
         procedure :: real_form_w_width_decimal_exp
@@ -66,9 +64,6 @@ contains
         case (eng_form%enum)
             allocate (new_real_spec, source=real_eng(width, decimal_place_digits, exponent_digits))
 
-        case (hex_form%enum)
-            allocate (new_real_spec, source=real_hex(width, decimal_place_digits, exponent_digits))
-
         case default
             allocate (new_real_spec, source=real())
 
@@ -94,9 +89,6 @@ contains
 
         case (eng_form%enum)
             allocate (new_real_spec, source=real_eng())
-
-        case (hex_form%enum)
-            allocate (new_real_spec, source=real_hex())
 
         case default
             allocate (new_real_spec, source=real())
