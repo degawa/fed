@@ -38,7 +38,7 @@ contains
     !>指定の形式の実数型編集記述子のインスタンスを生成して返す．
     !>欄幅には`width`，小数部の桁数には`decimal_place_digits`が
     !>用いられる．
-    !>指定された形式が指数形式，科学形式，工学形式，16進数形式の
+    !>指定された形式が指数形式，科学形式，工学形式の
     !>いずれでもない場合は標準形式の実数型編集記述子のインスタンスが生成される．
     function real_form_w_width_decimal_exp(form, width, decimal_place_digits, exponent_digits) result(new_real_spec)
         implicit none
@@ -70,7 +70,7 @@ contains
     end function real_form_w_width_decimal_exp
 
     !>指定の形式の実数型編集記述子のインスタンスを生成して返す．
-    !>指定された形式が指数形式，科学形式，工学形式，16進数形式の
+    !>指定された形式が指数形式，科学形式，工学形式の
     !>いずれでもない場合は標準形式の実数型編集記述子のインスタンスが生成される．
     function real_form(form) result(new_real_spec)
         implicit none
