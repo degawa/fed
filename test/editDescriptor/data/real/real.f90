@@ -5,6 +5,7 @@ program test_real_data_descriptor
     use :: fed_editDescriptor_data_real_scientific
     use :: fed_editDescriptor_data_real_engineering
     use :: fed_editDescriptor_data_real_hexadecimalSignificand
+    use :: fed_editDescriptor_data_real_facade
     use :: fassert
     implicit none
 
@@ -37,6 +38,21 @@ program test_real_data_descriptor
     call real_hex_returns_EXwmEe_when_passed_w_m_e()
     call real_hex_returns_EXwm_when_passed_w_m_0()
     call real_hex_returns_default_spec_when_passed_no_argument()
+
+    call comparison_of_enums_returns_true_when_enum_are_same()
+    call comparison_of_enums_returns_false_when_enum_are_different()
+    call real_exp_form_returns_EwmEe_when_passed_w_m_e()
+    call real_exp_form_returns_Ewm_when_passed_w_m_0()
+    call real_exp_form_returns_default_spec_when_passed_no_argument()
+    call real_sci_form_returns_ESwmEe_when_passed_w_m_e()
+    call real_sci_form_returns_ESwm_when_passed_w_m_0()
+    call real_sci_form_returns_default_spec_when_passed_no_argument()
+    call real_eng_form_returns_ENwmEe_when_passed_w_m_e()
+    call real_eng_form_returns_ENwm_when_passed_w_m_0()
+    call real_eng_form_returns_default_spec_when_passed_no_argument()
+    call real_hex_form_returns_EXwmEe_when_passed_w_m_e()
+    call real_hex_form_returns_EXwm_when_passed_w_m_0()
+    call real_hex_form_returns_default_spec_when_passed_no_argument()
 contains
     subroutine real_std_constructor_returns_real_std_descriptor_instance()
         use :: fed_editDescriptor
@@ -451,7 +467,298 @@ contains
         call desc%destruct()
     end subroutine real_hex_returns_default_spec_when_passed_no_argument
 
+    subroutine comparison_of_enums_returns_true_when_enum_are_same()
+        implicit none
+        call assert_true(exp_form == exp_form, &
+                         "comparison of exp_form returns true when enumerator on both sides are the same")
+
+        call assert_true(sci_form == sci_form, &
+                         "comparison of sci_form returns true when enumerator on both sides are the same")
+
+        call assert_true(eng_form == eng_form, &
+                         "comparison of eng_form returns true when enumerator on both sides are the same")
+
+        call assert_true(hex_form == hex_form, &
+                         "comparison of hex_form returns true when enumerator on both sides are the same")
+    end subroutine comparison_of_enums_returns_true_when_enum_are_same
+
+    subroutine comparison_of_enums_returns_false_when_enum_are_different()
+        implicit none
+        call assert_false(exp_form == sci_form, &
+                          "comparison of exp_form and sci_form returns false")
+
+        call assert_false(exp_form == eng_form, &
+                          "comparison of exp_form and eng_form returns false")
+
+        call assert_false(exp_form == hex_form, &
+                          "comparison of exp_form and hex_form returns false")
+
+        call assert_false(sci_form == exp_form, &
+                          "comparison of sci_form and exp_form returns false")
+
+        call assert_false(sci_form == eng_form, &
+                          "comparison of sci_form and eng_form returns false")
+
+        call assert_false(sci_form == hex_form, &
+                          "comparison of sci_form and hex_form returns false")
+
+        call assert_false(eng_form == exp_form, &
+                          "comparison of eng_form and exp_form returns false")
+
+        call assert_false(eng_form == sci_form, &
+                          "comparison of eng_form and sci_form returns false")
+
+        call assert_false(eng_form == hex_form, &
+                          "comparison of eng_form and hex_form returns false")
+
+        call assert_false(hex_form == exp_form, &
+                          "comparison of hex_form and exp_form returns false")
+
+        call assert_false(hex_form == sci_form, &
+                          "comparison of hex_form and sci_form returns false")
+
+        call assert_false(hex_form == eng_form, &
+                          "comparison of hex_form and eng_form returns false")
+    end subroutine comparison_of_enums_returns_false_when_enum_are_different
+
+    subroutine real_exp_form_returns_EwmEe_when_passed_w_m_e()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(exp_form, 12, 6, 1)
+        call assert_equal(desc%get(), "E12.6E1", &
+                          "real(exp_form, 12, 6, 1) should return 'E12.6E1'")
+
+        desc = real(exp_form, 40, 0, 3)
+        call assert_equal(desc%get(), "E40.0E3", &
+                          "real(exp_form, 40, 0, 3) should return 'E40.0E3'")
+
+        desc = real(exp_form, 10, -1, 1) ! 7+1+len("-.E+")
+        call assert_equal(desc%get(), "E12.7E1", &
+                          "real(exp_form, 10, -1, 1) should return 'E12.7E1'")
+
+        desc = real(exp_form, 10, 3, -1) ! 3+1+len("-.E+")
+        call assert_equal(desc%get(), "E10.3E1", &
+                          "real(exp_form, 10, 3, -1) should return 'E10.3E1'")
+
+        desc = real(exp_form, 6, -1, -1) ! 7+1+len("-.E+")
+        call assert_equal(desc%get(), "E12.7E1", &
+                          "real(exp_form, 6, -1, -1) should return 'E12.7E1'")
+
         ! teardown
         call desc%destruct()
-    end subroutine real_hex_returns_default_spec_when_passed_no_argument
+    end subroutine real_exp_form_returns_EwmEe_when_passed_w_m_e
+
+    subroutine real_exp_form_returns_Ewm_when_passed_w_m_0()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(exp_form, 12, 6, 0)
+        call assert_equal(desc%get(), "E12.6", &
+                          "real(exp_form, 12, 6, 0) should return 'E12.6'")
+
+        desc = real(exp_form, 40, 0, 0)
+        call assert_equal(desc%get(), "E40.0", &
+                          "real(exp_form, 40, 0, 0) should return 'E40.0'")
+
+        desc = real(exp_form, 10, -1, 0) ! 7+0+len("-.E+")
+        call assert_equal(desc%get(), "E11.7", &
+                          "real(exp_form, 10, -1, 0) should return 'E11.7'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_exp_form_returns_Ewm_when_passed_w_m_0
+
+    subroutine real_exp_form_returns_default_spec_when_passed_no_argument()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(exp_form) ! 7+1+len("-.E+")
+        print *, desc%get()
+        call assert_equal(desc%get(), "E12.7E1", &
+                          "real(exp_form) should return 'E12.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_exp_form_returns_default_spec_when_passed_no_argument
+
+    subroutine real_sci_form_returns_ESwmEe_when_passed_w_m_e()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(sci_form, 12, 6, 1)
+        call assert_equal(desc%get(), "ES12.6E1", &
+                          "real(sci_form, 12, 6, 1) should return 'ES12.6E1'")
+
+        desc = real(sci_form, 40, 0, 3)
+        call assert_equal(desc%get(), "ES40.0E3", &
+                          "real(sci_form, 40, 0, 3) should return 'ES40.0E3'")
+
+        desc = real(sci_form, 10, -1, 1) ! 7+1+len("-0.E+")
+        call assert_equal(desc%get(), "ES13.7E1", &
+                          "real(sci_form, 10, -1, 1) should return 'ES13.7E1'")
+
+        desc = real(sci_form, 10, 3, -1) ! 3+1+len("-0.E+")
+        call assert_equal(desc%get(), "ES10.3E1", &
+                          "real(sci_form, 10, 3, -1) should return 'ES10.3E1'")
+
+        desc = real(sci_form, 6, -1, -1) ! 7+1+len("-0.E+")
+        call assert_equal(desc%get(), "ES13.7E1", &
+                          "real(sci_form, 6, -1, -1) should return 'ES13.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_sci_form_returns_ESwmEe_when_passed_w_m_e
+
+    subroutine real_sci_form_returns_ESwm_when_passed_w_m_0()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(sci_form, 12, 6, 0)
+        call assert_equal(desc%get(), "ES12.6", &
+                          "real(sci_form, 12, 6, 0) should return 'ES12.6'")
+
+        desc = real(sci_form, 40, 0, 0)
+        call assert_equal(desc%get(), "ES40.0", &
+                          "real(sci_form, 40, 0, 0) should return 'ES40.0'")
+
+        desc = real(sci_form, 10, -1, 0) ! 7+0+len("-0.E+")
+        call assert_equal(desc%get(), "ES12.7", &
+                          "real(sci_form, 10, -1, 0) should return 'ES12.7'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_sci_form_returns_ESwm_when_passed_w_m_0
+
+    subroutine real_sci_form_returns_default_spec_when_passed_no_argument()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(sci_form) ! 7+1+len("-0.E+")
+        call assert_equal(desc%get(), "ES13.7E1", &
+                          "real(sci_form) should return 'ES13.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_sci_form_returns_default_spec_when_passed_no_argument
+
+    subroutine real_eng_form_returns_ENwmEe_when_passed_w_m_e()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(eng_form, 14, 6, 1)
+        call assert_equal(desc%get(), "EN14.6E1", &
+                          "real(eng_form, 14, 6, 1) should return 'EN14.6E1'")
+
+        desc = real(eng_form, 40, 0, 3)
+        call assert_equal(desc%get(), "EN40.0E3", &
+                          "real(eng_form, 40, 0, 3) should return 'EN40.0E3'")
+
+        desc = real(eng_form, 10, -1, 1) ! 7+1+len("-000.E+")
+        call assert_equal(desc%get(), "EN15.7E1", &
+                          "real(eng_form, 10, -1, 1) should return 'EN15.7E1'")
+
+        desc = real(eng_form, 12, 3, -1) ! 3+1+len("-000.E+")
+        call assert_equal(desc%get(), "EN12.3E1", &
+                          "real(eng_form, 12, 3, -1) should return 'EN12.3E1'")
+
+        desc = real(eng_form, 6, -1, -1) ! 7+1+len("-000.E+")
+        call assert_equal(desc%get(), "EN15.7E1", &
+                          "real(eng_form, 6, -1, -1) should return 'EN15.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_eng_form_returns_ENwmEe_when_passed_w_m_e
+
+    subroutine real_eng_form_returns_ENwm_when_passed_w_m_0()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(eng_form, 14, 6, 0)
+        call assert_equal(desc%get(), "EN14.6", &
+                          "real(eng_form, 14, 6, 0) should return 'EN14.6'")
+
+        desc = real(eng_form, 40, 0, 0)
+        call assert_equal(desc%get(), "EN40.0", &
+                          "real(eng_form, 40, 0, 0) should return 'EN40.0'")
+
+        desc = real(eng_form, 10, -1, 0) ! 7+0+len("-000.E+")
+        call assert_equal(desc%get(), "EN14.7", &
+                          "real(eng_form, 10, -1, 0) should return 'EN14.7'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_eng_form_returns_ENwm_when_passed_w_m_0
+
+    subroutine real_eng_form_returns_default_spec_when_passed_no_argument()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(eng_form) ! 7+1+len("-000.E+")
+        call assert_equal(desc%get(), "EN15.7E1", &
+                          "real(eng_form) should return 'EN15.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_eng_form_returns_default_spec_when_passed_no_argument
+
+    subroutine real_hex_form_returns_EXwmEe_when_passed_w_m_e()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(hex_form, 14, 6, 1)
+        call assert_equal(desc%get(), "EX14.6E1", &
+                          "real(hex_form, 14, 6, 1) should return 'EX14.6E1'")
+
+        desc = real(hex_form, 40, 0, 3)
+        call assert_equal(desc%get(), "EX40.0E3", &
+                          "real(hex_form, 40, 0, 3) should return 'EX40.0E3'")
+
+        desc = real(hex_form, 10, -1, 1) ! 7+1+len("-0X.P+")
+        call assert_equal(desc%get(), "EX14.7E1", &
+                          "real(hex_form, 10, -1, 1) should return 'EX14.7E1'")
+
+        desc = real(hex_form, 10, 3, -1) ! 3+1+len("-0X.P+")
+        call assert_equal(desc%get(), "EX10.3E1", &
+                          "real(hex_form, 10, 3, -1) should return 'EX10.3E1'")
+
+        desc = real(hex_form, 6, -1, -1) ! 7+1+len("-0X.P+")
+        call assert_equal(desc%get(), "EX14.7E1", &
+                          "real(hex_form, 6, -1, -1) should return 'EX14.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_hex_form_returns_EXwmEe_when_passed_w_m_e
+
+    subroutine real_hex_form_returns_EXwm_when_passed_w_m_0()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(hex_form, 12, 6, 0)
+        call assert_equal(desc%get(), "EX12.6", &
+                          "real(hex_form, 12, 6, 0) should return 'EX12.6'")
+
+        desc = real(hex_form, 40, 0, 0)
+        call assert_equal(desc%get(), "EX40.0", &
+                          "real(hex_form, 40, 0, 0) should return 'EX40.0'")
+
+        desc = real(hex_form, 10, -1, 0) ! 7+0+len("-0X.P+")
+        call assert_equal(desc%get(), "EX13.7", &
+                          "real(hex_form, 10, -1, 0) should return 'EX13.7'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_hex_form_returns_EXwm_when_passed_w_m_0
+
+    subroutine real_hex_form_returns_default_spec_when_passed_no_argument()
+        implicit none
+        class(real_edit_descriptor_type), allocatable :: desc
+
+        desc = real(hex_form) ! 7+1+len("-0X.P+")
+        call assert_equal(desc%get(), "EX14.7E1", &
+                          "real(hex_form) should return 'EX14.7E1'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_hex_form_returns_default_spec_when_passed_no_argument
 end program test_real_data_descriptor
