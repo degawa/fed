@@ -4,6 +4,7 @@ program test_integer_data_descriptor
     use :: fed_editDescriptor_data_integer_binary
     use :: fed_editDescriptor_data_integer_octal
     use :: fed_editDescriptor_data_integer_hexadecimal
+    use :: fed_editDescriptor_data_integer_facade
     use :: fassert
     implicit none
 
@@ -25,6 +26,28 @@ program test_integer_data_descriptor
     call int_bin_returns_Bwm_when_passed_w_m()
     call int_bin_returns_B0_when_no_argument_passed()
     call int_bin_returns_Bww_when_passed_w()
+
+    call oct_int_constructor_returns_octal_integer_descriptor_instance()
+    call int_oct_returns_Owm_when_passed_w_m()
+    call int_oct_returns_O0_when_no_argument_passed()
+    call int_oct_returns_Oww_when_passed_w()
+
+    call hex_int_constructor_returns_hex_integer_descriptor_instance()
+    call int_hex_returns_Zwm_when_passed_w_m()
+    call int_hex_returns_Z0_when_no_argument_passed()
+    call int_hex_returns_Zww_when_passed_w()
+
+    call comparison_of_enums_returns_true_when_enum_are_same()
+    call comparison_of_enums_returns_false_when_enum_are_different()
+    call int_bin_form_returns_Bwm_when_passed_w_m()
+    call int_bin_form_returns_Bww_when_passed_w()
+    call int_bin_form_returns_B0_when_no_argument_passed()
+    call int_oct_form_returns_Owm_when_passed_w_m()
+    call int_oct_form_returns_Oww_when_passed_w()
+    call int_oct_form_returns_O0_when_no_argument_passed()
+    call int_hex_form_returns_Zwm_when_passed_w_m()
+    call int_hex_form_returns_Zww_when_passed_w()
+    call int_hex_form_returns_Z0_when_no_argument_passed()
 
 contains
     subroutine int_spec_returns_wm_when_passed_valid_width_pad()
@@ -522,4 +545,277 @@ contains
         ! teardown
         call desc%destruct()
     end subroutine int_hex_returns_Zww_when_passed_w
+
+    subroutine comparison_of_enums_returns_true_when_enum_are_same()
+        implicit none
+        call assert_true(bin_digits == bin_digits, &
+                         "comparison of bin_digits returns true when enumerator on both sides are the same")
+
+        call assert_true(oct_digits == oct_digits, &
+                         "comparison of oct_digits returns true when enumerator on both sides are the same")
+
+        call assert_true(hex_digits == hex_digits, &
+                         "comparison of hex_digits returns true when enumerator on both sides are the same")
+    end subroutine comparison_of_enums_returns_true_when_enum_are_same
+
+    subroutine comparison_of_enums_returns_false_when_enum_are_different()
+        implicit none
+        call assert_false(bin_digits == oct_digits, &
+                          "comparison of bin_digits and oct_digits returns false")
+
+        call assert_false(bin_digits == hex_digits, &
+                          "comparison of bin_digits and hex_digits returns false")
+
+        call assert_false(oct_digits == bin_digits, &
+                          "comparison of oct_digits and bin_digits returns false")
+
+        call assert_false(oct_digits == hex_digits, &
+                          "comparison of oct_digits and hex_digits returns false")
+
+        call assert_false(hex_digits == bin_digits, &
+                          "comparison of hex_digits and bin_digits returns false")
+
+        call assert_false(hex_digits == oct_digits, &
+                          "comparison of hex_digits and oct_digits returns false")
+    end subroutine comparison_of_enums_returns_false_when_enum_are_different
+
+    subroutine int_bin_form_returns_Bwm_when_passed_w_m()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(bin_digits, 2, 1)
+        call assert_equal(desc%get(), "B2.1", &
+                          "int(bin_digits, 2, 1) should return 'B2.1'")
+        desc = int(bin_digits, 4, 2)
+        call assert_equal(desc%get(), "B4.2", &
+                          "int(bin_digits, 4, 2) should return 'B4.2'")
+        desc = int(bin_digits, 14, 14)
+        call assert_equal(desc%get(), "B14.14", &
+                          "int(bin_digits, 14, 14) should return 'B14.14'")
+
+        desc = int(bin_digits, 2, 3)
+        call assert_equal(desc%get(), "B2.2", &
+                          "int(bin_digits, 2, 3) should return 'B2.2'")
+        desc = int(bin_digits, 6, 8)
+        call assert_equal(desc%get(), "B6.6", &
+                          "int(bin_digits, 6, 8) should return 'B6.6'")
+
+        desc = int(bin_digits, 0, 3)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, 0, 3) should return 'B0'")
+
+        desc = int(bin_digits, 5, 0)
+        call assert_equal(desc%get(), "B5", &
+                          "int(bin_digits, 5, 0) should return 'B5'")
+
+        desc = int(bin_digits, -1, 3)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, -1, 3) should return 'B0'")
+
+        desc = int(bin_digits, 8, -1)
+        call assert_equal(desc%get(), "B8", &
+                          "int(bin_digits, 8, -1) should return 'B8'")
+
+        desc = int(bin_digits, -2, -1)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, -2, -1) should return 'B0'")
+        desc = int(bin_digits, -5, -10)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, -5, -10) should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_form_returns_Bwm_when_passed_w_m
+
+    subroutine int_bin_form_returns_B0_when_no_argument_passed()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(bin_digits)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits) should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_form_returns_B0_when_no_argument_passed
+
+    subroutine int_bin_form_returns_Bww_when_passed_w()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(bin_digits, 2)
+        call assert_equal(desc%get(), "B2.2", &
+                          "int(bin_digits, 2) should return 'B2.2'")
+
+        desc = int(bin_digits, 0)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, 0) should return 'B0'")
+
+        desc = int(bin_digits, -1)
+        call assert_equal(desc%get(), "B0", &
+                          "int(bin_digits, -1) should return 'B0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_bin_form_returns_Bww_when_passed_w
+
+    subroutine int_oct_form_returns_Owm_when_passed_w_m()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(oct_digits, 2, 1)
+        call assert_equal(desc%get(), "O2.1", &
+                          "int(oct_digits, 2, 1) should return 'O2.1'")
+        desc = int(oct_digits, 4, 2)
+        call assert_equal(desc%get(), "O4.2", &
+                          "int(oct_digits, 4, 2) should return 'O4.2'")
+        desc = int(oct_digits, 14, 14)
+        call assert_equal(desc%get(), "O14.14", &
+                          "int(oct_digits, 14, 14) should return 'O14.14'")
+
+        desc = int(oct_digits, 2, 3)
+        call assert_equal(desc%get(), "O2.2", &
+                          "int(oct_digits, 2, 3) should return 'O2.2'")
+        desc = int(oct_digits, 6, 8)
+        call assert_equal(desc%get(), "O6.6", &
+                          "int(oct_digits, 6, 8) should return 'O6.6'")
+
+        desc = int(oct_digits, 0, 3)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, 0, 3) should return 'O0'")
+
+        desc = int(oct_digits, 5, 0)
+        call assert_equal(desc%get(), "O5", &
+                          "int(oct_digits, 5, 0) should return 'O5'")
+
+        desc = int(oct_digits, -1, 3)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, -1, 3) should return 'O0'")
+
+        desc = int(oct_digits, 8, -1)
+        call assert_equal(desc%get(), "O8", &
+                          "int(oct_digits, 8, -1) should return 'O8'")
+
+        desc = int(oct_digits, -2, -1)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, -2, -1) should return 'O0'")
+        desc = int(oct_digits, -5, -10)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, -5, -10) should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_form_returns_Owm_when_passed_w_m
+
+    subroutine int_oct_form_returns_O0_when_no_argument_passed()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(oct_digits)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits) should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_form_returns_O0_when_no_argument_passed
+
+    subroutine int_oct_form_returns_Oww_when_passed_w()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(oct_digits, 2)
+        call assert_equal(desc%get(), "O2.2", &
+                          "int(oct_digits, 2) should return 'O2.2'")
+
+        desc = int(oct_digits, 0)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, 0) should return 'O0'")
+
+        desc = int(oct_digits, -1)
+        call assert_equal(desc%get(), "O0", &
+                          "int(oct_digits, -1) should return 'O0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_oct_form_returns_Oww_when_passed_w
+
+    subroutine int_hex_form_returns_Zwm_when_passed_w_m()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(hex_digits, 2, 1)
+        call assert_equal(desc%get(), "Z2.1", &
+                          "int(hex_digits, 2, 1) should return 'Z2.1'")
+        desc = int(hex_digits, 4, 2)
+        call assert_equal(desc%get(), "Z4.2", &
+                          "int(hex_digits, 4, 2) should return 'Z4.2'")
+        desc = int(hex_digits, 14, 14)
+        call assert_equal(desc%get(), "Z14.14", &
+                          "int(hex_digits, 14, 14) should return 'Z14.14'")
+
+        desc = int(hex_digits, 2, 3)
+        call assert_equal(desc%get(), "Z2.2", &
+                          "int(hex_digits, 2, 3) should return 'Z2.2'")
+        desc = int(hex_digits, 6, 8)
+        call assert_equal(desc%get(), "Z6.6", &
+                          "int(hex_digits, 6, 8) should return 'Z6.6'")
+
+        desc = int(hex_digits, 0, 3)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, 0, 3) should return 'Z0'")
+
+        desc = int(hex_digits, 5, 0)
+        call assert_equal(desc%get(), "Z5", &
+                          "int(hex_digits, 5, 0) should return 'Z5'")
+
+        desc = int(hex_digits, -1, 3)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, -1, 3) should return 'Z0'")
+
+        desc = int(hex_digits, 8, -1)
+        call assert_equal(desc%get(), "Z8", &
+                          "int(hex_digits, 8, -1) should return 'Z8'")
+
+        desc = int(hex_digits, -2, -1)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, -2, -1) should return 'Z0'")
+        desc = int(hex_digits, -5, -10)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, -5, -10) should return 'Z0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_hex_form_returns_Zwm_when_passed_w_m
+
+    subroutine int_hex_form_returns_Z0_when_no_argument_passed()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(hex_digits)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits) should return 'Z0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_hex_form_returns_Z0_when_no_argument_passed
+
+    subroutine int_hex_form_returns_Zww_when_passed_w()
+        implicit none
+        class(integer_edit_descriptor_type), allocatable :: desc
+
+        desc = int(hex_digits, 2)
+        call assert_equal(desc%get(), "Z2.2", &
+                          "int(hex_digits, 2) should return 'Z2.2'")
+
+        desc = int(hex_digits, 0)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, 0) should return 'Z0'")
+
+        desc = int(hex_digits, -1)
+        call assert_equal(desc%get(), "Z0", &
+                          "int(hex_digits, -1) should return 'Z0'")
+
+        ! teardown
+        call desc%destruct()
+    end subroutine int_hex_form_returns_Zww_when_passed_w
 end program test_integer_data_descriptor
