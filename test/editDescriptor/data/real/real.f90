@@ -450,4 +450,8 @@ contains
         ! teardown
         call desc%destruct()
     end subroutine real_hex_returns_default_spec_when_passed_no_argument
+
+        ! teardown
+        call desc%destruct()
+    end subroutine real_hex_returns_default_spec_when_passed_no_argument
 end program test_real_data_descriptor
