@@ -1,5 +1,5 @@
 # fed
-feeds a string with Fortran edit descriptors.
+functions to create Fortran edit descriptors.
 
 ## Motivations
 I am fed up with Fortran's edit descriptors.
