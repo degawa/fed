@@ -125,7 +125,7 @@ The current version of fed provides the following functions and an operator:
 
     stat = format("allocataion status: "//logical())
     memsize = format("memory size: "//int()//" bits")
-    fmt_bnd = format("array bounds = ["//repeat(int(4), rank(i))//"] x ["//repeat(int(4), rank(i))//"]")
+    fmt_bnd = format("array bounds = ["//2*int(4)//"] x ["//2*int(4)//"]")
 
     print stat, allocated(i)               !allocataion status: T
     print memsize, storage_size(i)*size(i) !storage size: 2112 bits
