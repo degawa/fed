@@ -24,6 +24,7 @@ program test_complex_data_descriptor
     call complex_exp_form_returns_cmplx_exp_edit_descriptor()
     call complex_sci_form_returns_cmplx_sci_edit_descriptor()
     call complex_eng_form_returns_cmplx_eng_edit_descriptor()
+    call multiply_op_returns_data_desc_catenated_w_repeat_count()
 
 contains
     subroutine complex_spec_returns_bracket_separator_desc()
@@ -391,4 +392,40 @@ contains
                           'complex(eng_form) should return "(",EN15.7E1,",",EN15.7E1,")"')
         call desc%destruct()
     end subroutine complex_eng_form_returns_cmplx_eng_edit_descriptor
+
+    subroutine multiply_op_returns_data_desc_catenated_w_repeat_count()
+        use :: fed_editDescriptor_data, only:data_edit_descriptor_type
+        implicit none
+        class(complex_edit_descriptor_type), allocatable :: desc
+        type(data_edit_descriptor_type) :: cnt_desc
+
+        ! setup
+        desc = complex(eng_form, 14, 6, 1)
+
+        ! test
+        cnt_desc = 2*desc
+        call assert_equal(cnt_desc%get(), '2("(",EN14.6E1,",",EN14.6E1,")")', &
+                          '2*''"(",EN14.6E1,",",EN14.6E1,")"'' returns ''2("(",EN14.6E1,",",EN14.6E1,")")''')
+
+        cnt_desc = 0*desc
+        call assert_equal(cnt_desc%get(), '"(",EN14.6E1,",",EN14.6E1,")"', &
+                          '0*''"(",EN14.6E1,",",EN14.6E1,")"'' returns ''"(",EN14.6E1,",",EN14.6E1,")"''')
+
+        cnt_desc = (-1)*desc
+        call assert_equal(cnt_desc%get(), '"(",EN14.6E1,",",EN14.6E1,")"', &
+                          '-1*''"(",EN14.6E1,",",EN14.6E1,")"'' returns ''"(",EN14.6E1,",",EN14.6E1,")"''')
+
+        cnt_desc = desc*5
+        call assert_equal(cnt_desc%get(), '5("(",EN14.6E1,",",EN14.6E1,")")', &
+                          '''"(",EN14.6E1,",",EN14.6E1,")"''*5 returns ''5("(",EN14.6E1,",",EN14.6E1,")")''')
+
+        cnt_desc = desc*0
+        call assert_equal(cnt_desc%get(), '"(",EN14.6E1,",",EN14.6E1,")"', &
+                          '''"(",EN14.6E1,",",EN14.6E1,")"''*0 returns ''"(",EN14.6E1,",",EN14.6E1,")"''')
+
+        cnt_desc = desc*(-1)
+        call assert_equal(cnt_desc%get(), '"(",EN14.6E1,",",EN14.6E1,")"', &
+                          '''"(",EN14.6E1,",",EN14.6E1,")"''*-1 returns ''("(",EN14.6E1,",",EN14.6E1,")")''')
+
+    end subroutine multiply_op_returns_data_desc_catenated_w_repeat_count
 end program test_complex_data_descriptor
