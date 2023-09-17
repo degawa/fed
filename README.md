@@ -37,7 +37,7 @@ This library provides procedures and an operator for generating format specifica
     - [x] `EN` (engineering form)
     - [x] `ES` (scientific form)
     - [ ] ~~`EX` (hexadecimal-significand form)~~
-- [ ] user-defined type
+- [x] user-defined type
 - [ ] arrays
     - [ ] character
     - [ ] logical
@@ -137,6 +137,55 @@ The current version of fed provides the following functions and an operator:
 
     deallocate (i)
     deallocate (j)
+```
+
+```Fortran
+    type(vector_2d_type) :: vec
+    vec = vector_2d(0.00217, 4721.3)
+
+    print *, vec !    2.16999999E-03   4721.29980
+    print format(udt("vector_2d", [12, 3])), vec ![       0.002    4721.300]
+    print format(udt("vector_2d", [12, 3, 1])), vec  ![    2.170E-3    4.721E+3]
+
+!---- definition of vector_2d_type and formatted write procedure -----
+    type, public :: vector_2d_type
+        real(real32), private :: x, y
+    end type vector_2d_type
+
+    subroutine formatted_write(vec, unit, iotype, v_list, io_status, io_message)
+        use :: fed, sci => real_sci
+        implicit none
+        class(vector_2d_type), intent(in) :: vec
+        integer(int32), intent(in) :: unit
+        character(*), intent(in) :: iotype
+        integer(int32), intent(in) :: v_list(:)
+        integer(int32), intent(out) :: io_status
+        character(*), intent(inout) :: io_message
+
+        character(:), allocatable :: fmt
+
+        if ((iotype == "LISTDIRECTED" .or. len(iotype) == len("DT")) &
+            .or. size(v_list) < 2) then
+            write (unit, *, iostat=io_status, iomsg=io_message) vec%x, vec%y
+            io_status = 0
+            io_message = ""
+            return
+        end if
+
+        if (iotype(3:) /= "vector_2d") then
+            io_status = 1
+            io_message = "type mismatch"
+            return
+        end if
+
+        if (size(v_list) == 2) fmt = format("["//2*real(v_list(1), v_list(2))//"]")
+        if (size(v_list) >= 3) fmt = format("["//2*sci(v_list(1), v_list(2), v_list(3))//"]")
+
+        write (unit, fmt, &
+               iostat=io_status, iomsg=io_message) vec%x, vec%y
+        io_status = 0
+        io_message = ""
+    end subroutine formatted_write
 ```
 ### Types for internal representation
 fed defines three categories of user-defined types for constructing Fortran *format specification*.
