@@ -16,6 +16,7 @@ module fed
     use :: fed_editDescriptor_data_complex_scientific, only:complex_sci
     use :: fed_editDescriptor_data_complex_engineering, only:complex_eng
     use :: fed_editDescriptor_data_complex_facade, only:complex
+    use :: fed_editDescriptor_data_userDefinedDerivedType, only:udt
     use :: fed_editDescriptor_characterString, only:str
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
@@ -28,6 +29,7 @@ module fed
     public :: complex
     public :: char
     public :: logical
+    public :: udt
     public :: str
     public :: format
     public :: repeat
