@@ -9,7 +9,7 @@ I am fed up with Fortran's edit descriptors.
 - Repetition of commas (`,`) and quotation marks (`'` or `"`) like `("(",G0,",",G0,")")'`
 - etc.
 
-This library provides procedures and an operator for generating format specifications in a more human-understandable manner.
+This library provides procedures and operators for generating format specifications in a more human-understandable manner.
 
 ## Supported Features
 ### format item
