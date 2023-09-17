@@ -76,6 +76,7 @@ The current version of fed provides the following functions and an operator:
 |operator|functionality|
 |:--|:--|
 |`//`|catenates edit descriptors.|
+|`*`|sets a repeat count of a data edit descriptor.|
 
 ### Examples
 ```Fortran
