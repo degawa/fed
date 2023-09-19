@@ -18,6 +18,9 @@ module fed
     use :: fed_editDescriptor_data_complex_facade, only:complex
     use :: fed_editDescriptor_data_userDefinedDerivedType, only:udt
     use :: fed_editDescriptor_characterString, only:str
+    use :: fed_editDescriptor_control_colon, only:terminate
+    use :: fed_editDescriptor_control_slash, only:end_line
+    use :: fed_editDescriptor_control_position, only:move, move_to
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
     use :: fed_repeat, only:repeat
@@ -31,6 +34,9 @@ module fed
     public :: logical
     public :: udt
     public :: str
+    public :: terminate
+    public :: end_line
+    public :: move, move_to
     public :: format
     public :: repeat
 
