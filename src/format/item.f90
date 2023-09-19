@@ -21,6 +21,8 @@ module fed_format_item
         !* 編集記述子を文字列で返却
         procedure, public, pass :: has_edit_descriptor
         !* 編集記述子が設定されているか否かを検査
+        procedure, public, pass :: is_data_edit_descriptor
+        !* 編集記述子がデータ編集記述子かを検査
         procedure, public, pass :: destruct
         !* 編集記述子を破棄
         final :: finalize
@@ -64,6 +66,19 @@ contains
 
         has_edit_descriptor = allocated(this%edit_descriptor)
     end function has_edit_descriptor
+
+    !>編集記述子がデータ編集記述子であれば`.true.`，そうでなければ`.false.`を返す．
+    pure logical function is_data_edit_descriptor(this)
+        use :: fed_editDescriptor_data
+        implicit none
+        class(format_item_type), intent(in) :: this
+            !! 当該実体仮引数
+
+        type(data_edit_descriptor_type) :: type_mold
+
+        is_data_edit_descriptor = this%has_edit_descriptor() .and. &
+                                  extends_type_of(this%edit_descriptor, type_mold)
+    end function is_data_edit_descriptor
 
     !>編集記述子を文字列で返す．
     !>編集記述子が設定されていない場合，長さ0の文字列`""`を返す．
