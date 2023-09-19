@@ -22,7 +22,7 @@ contains
         type(format_item_type) :: rep_item
 
         ! setup
-        itms = items(edit_descriptor_type("desc1"))
+        itms = items(dat("desc1"))
         ! test
         rep_item = repeat(itms, 3)
         call assert_equal(rep_item%get_edit_descriptor(), '3(desc1)', &
@@ -32,7 +32,7 @@ contains
         call rep_item%destruct()
 
         ! setup
-        itms = edit_descriptor_type("desc1")//edit_descriptor_type("desc2")
+        itms = dat("desc1")//dat("desc2")
         ! test
         rep_item = repeat(itms, 2)
         call assert_equal(rep_item%get_edit_descriptor(), '2(desc1,desc2)', &
@@ -42,7 +42,7 @@ contains
         call rep_item%destruct()
 
         ! setup
-        itms = edit_descriptor_type("desc1")//edit_descriptor_type("desc2")//edit_descriptor_type("desc3")
+        itms = dat("desc1")//dat("desc2")//dat("desc3")
         ! test
         rep_item = repeat(itms)
         call assert_equal(rep_item%get_edit_descriptor(), '*(desc1,desc2,desc3)', &
@@ -162,7 +162,7 @@ contains
         type(format_item_type) :: rep_item
 
         ! test
-        rep_item = repeat(edit_descriptor_type("desc1"), 5)
+        rep_item = repeat(dat("desc1"), 5)
         call assert_equal(rep_item%get_edit_descriptor(), '5(desc1)', &
                           "repeat(desc('desc1'), 5) should return '5(desc1)'")
         ! teardown
