@@ -27,8 +27,6 @@ contains
     !>@endwarning
     function construct_repeated_format_items_w_sep(format_items, separator, repeat_count) result(repeated_item)
         use :: strings_enclose
-        use :: stdlib_optval
-        use :: stdlib_strings
         implicit none
         type(format_items_type), intent(in) :: format_items
             !! 反復数が設定される書式項目並び
@@ -39,7 +37,7 @@ contains
         type(format_item_type) :: repeated_item
             !! 反復数をもつ書式項目
 
-        integer(int32) :: i, num_items, cnt
+        integer(int32) :: i, num_items
         character(:), allocatable :: desc, count_str
 
         ! 書式項目並びの編集記述子を結合する
@@ -57,15 +55,14 @@ contains
         ! 3(I0,:,",")を実現できるように，書式項目末尾にも必ず区切り文字を付ける
 
         ! 書式反復数を文字列に変換
-        if (present(repeat_count)) then
-            cnt = repeat_count
-            if (cnt <= 0) cnt = 1
-            count_str = to_string(cnt)
-        else
-            count_str = "*"
+        count_str = get_repeat_count_string(repeat_count)
+
+        if (.not. format_items%has_data_edit_descriptor() .and. count_str == "*") then
+            call repeated_item%set(to_edit_descriptor(desc, format_items%get_item_at(1)))
+            return
         end if
 
-        call repeated_item%set(edit_descriptor_type(count_str//enclose(desc, '(')))
+        call repeated_item%set(to_edit_descriptor(count_str//enclose(desc, '('), format_items%get_item_at(1)))
     end function construct_repeated_format_items_w_sep
 
     !>書式項目並びから反復数をもつ書式項目を生成して返す．
@@ -77,8 +74,6 @@ contains
     !>@endwarning
     function construct_repeated_format_items(format_items, repeat_count) result(repeated_item)
         use :: strings_enclose
-        use :: stdlib_optval
-        use :: stdlib_strings
         implicit none
         type(format_items_type), intent(in) :: format_items
             !! 反復数が設定される書式項目並び
@@ -87,7 +82,7 @@ contains
         type(format_item_type) :: repeated_item
             !! 反復数をもつ書式項目
 
-        integer(int32) :: i, num_items, cnt
+        integer(int32) :: i, num_items
         character(:), allocatable :: desc, count_str
 
         ! 書式項目並びの編集記述子を結合する
@@ -100,14 +95,14 @@ contains
         desc = desc//format_items%get_edit_descriptor_at(num_items)
 
         ! 書式反復数を文字列に変換
-        if (present(repeat_count)) then
-            cnt = repeat_count
-            if (cnt <= 0) cnt = 1
-            count_str = to_string(cnt)
-        else
-            count_str = "*"
+        count_str = get_repeat_count_string(repeat_count)
+
+        if (.not. format_items%has_data_edit_descriptor() .and. count_str == "*") then
+            call repeated_item%set(to_edit_descriptor(desc, mold=format_items%get_item_at(1)))
+            return
         end if
-        call repeated_item%set(edit_descriptor_type(count_str//enclose(desc, '(')))
+
+        call repeated_item%set(to_edit_descriptor(count_str//enclose(desc, '('), format_items%get_item_at(1)))
     end function construct_repeated_format_items
 
     !>書式反復数を文字列に変換して返す．
