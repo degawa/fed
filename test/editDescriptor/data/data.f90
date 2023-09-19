@@ -7,6 +7,7 @@ program test_data_descriptor
     print '(A)', "# Testing: data_edit_descriptor_type"
     call general_data_edit_descriptor_symbol_is_G()
     call multiply_op_returns_data_desc_catenated_w_repeat_count()
+    call constructor_returns_data_edit_desc_instance()
 
 contains
     subroutine general_data_edit_descriptor_symbol_is_G()
@@ -49,4 +50,36 @@ contains
         call assert_equal(cnt_desc%get(), "I4", &
                           "'I4'*-1 returns 'I4'")
     end subroutine multiply_op_returns_data_desc_catenated_w_repeat_count
+
+    subroutine constructor_returns_data_edit_desc_instance()
+        use :: fed_editDescriptor
+        implicit none
+        class(edit_descriptor_type), allocatable :: desc
+        type(data_edit_descriptor_type) :: type_mold
+
+        ! test
+        allocate (desc, source=data_edit_descriptor_type("test_for_constructor"))
+        call assert_true(same_type_as(desc, type_mold), &
+                         'data_edit_descriptor_type("") should return `data_edit_descriptor_type` instance'// &
+                         " [type check]")
+
+        call assert_equal(desc%get(), "test_for_constructor", &
+                          "constructor should return `edit_descriptor_type` instance"// &
+                          " [component `desc` check]")
+
+        ! teardown
+        deallocate (desc)
+
+        ! test
+        allocate (desc, source=dat("test_for_constructor"))
+        call assert_true(same_type_as(desc, type_mold), &
+                         'dat("") should return `data_edit_descriptor_type` instance'// &
+                         " [type check]")
+
+        call assert_equal(desc%get(), "test_for_constructor", &
+                          "constructor should return `edit_descriptor_type` instance"// &
+                          " [component `desc` check]")
+        ! teardown
+        deallocate (desc)
+    end subroutine constructor_returns_data_edit_desc_instance
 end program test_data_descriptor
