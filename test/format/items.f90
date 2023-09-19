@@ -12,6 +12,8 @@ program test_format_items
     call destruct_unset_format_items()
     call get_edit_desc_returns_edit_desc_for_item_w_specified_num()
     call cat_op_returns_items_containing_lhs_rhs()
+    call is_data_edit_desc_returns_true_when_item_contains_data()
+    call is_data_edit_desc_returns_false_when_desc_item_not_contain_data()
 
 contains
     subroutine construct_returns_format_items_type_instance()
@@ -392,4 +394,55 @@ contains
         call itms_lhs%destruct()
         call itms_rhs%destruct()
     end subroutine cat_op_returns_items_containing_lhs_rhs
+
+    subroutine is_data_edit_desc_returns_true_when_item_contains_data()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_true(itms%is_data_edit_descriptor(1), &
+                         "is_data_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `data_edit_descriptor_type`")
+
+        call assert_true(itms%is_data_edit_descriptor(6), &
+                         "is_data_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `data_edit_descriptor_type`")
+
+    end subroutine is_data_edit_desc_returns_true_when_item_contains_data
+
+    subroutine is_data_edit_desc_returns_false_when_desc_item_not_contain_data()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_false(itms%is_data_edit_descriptor(2), &
+                          "is_data_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `data_edit_descriptor_type`")
+
+        call assert_false(itms%is_data_edit_descriptor(3), &
+                          "is_data_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `data_edit_descriptor_type`")
+
+        call assert_false(itms%is_data_edit_descriptor(4), &
+                          "is_data_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `data_edit_descriptor_type`")
+
+        call assert_false(itms%is_data_edit_descriptor(5), &
+                          "is_data_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `data_edit_descriptor_type`")
+
+    end subroutine is_data_edit_desc_returns_false_when_desc_item_not_contain_data
+
 end program test_format_items
