@@ -2,6 +2,8 @@ program test_format_items
     use :: fed_format_items
     use :: fed_format_item
     use :: fed_editDescriptor
+    use :: fed_editDescriptor_data
+    use :: fed_editDescriptor_control
     use :: fed_editDescriptor_characterString
     use :: fassert
     implicit none
@@ -423,9 +425,6 @@ contains
     end subroutine is_data_edit_desc_returns_true_when_item_contains_data
 
     subroutine is_data_edit_desc_returns_false_when_desc_item_not_contain_data()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_characterString
-        use :: fed_editDescriptor_control
         implicit none
         type(format_items_type) :: itms
 
@@ -451,9 +450,6 @@ contains
     end subroutine is_data_edit_desc_returns_false_when_desc_item_not_contain_data
 
     subroutine is_ctrl_edit_desc_returns_true_when_item_contains_ctrl()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_characterString
-        use :: fed_editDescriptor_control
         implicit none
         type(format_items_type) :: itms
 
@@ -472,9 +468,6 @@ contains
     end subroutine is_ctrl_edit_desc_returns_true_when_item_contains_ctrl
 
     subroutine is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_characterString
-        use :: fed_editDescriptor_control
         implicit none
         type(format_items_type) :: itms
 
@@ -500,9 +493,6 @@ contains
     end subroutine is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl
 
     subroutine is_str_edit_desc_returns_true_when_item_contains_str()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_characterString
-        use :: fed_editDescriptor_control
         implicit none
         type(format_items_type) :: itms
 
@@ -521,9 +511,6 @@ contains
     end subroutine is_str_edit_desc_returns_true_when_item_contains_str
 
     subroutine is_str_edit_desc_returns_false_when_desc_item_not_contain_str()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_characterString
-        use :: fed_editDescriptor_control
         implicit none
         type(format_items_type) :: itms
 
@@ -549,9 +536,6 @@ contains
     end subroutine is_str_edit_desc_returns_false_when_desc_item_not_contain_str
 
     subroutine has_data_desc_returns_true_when_itmes_contain_data_desc()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_control
-        use :: fed_editDescriptor_characterString
         implicit none
         type(format_items_type) :: itms
 
@@ -749,9 +733,6 @@ contains
     end subroutine has_data_desc_returns_true_when_itmes_contain_data_desc
 
     subroutine has_data_desc_returns_false_when_itmes_not_contain_data_desc()
-        use :: fed_editDescriptor_data
-        use :: fed_editDescriptor_control
-        use :: fed_editDescriptor_characterString
         implicit none
         type(format_items_type) :: itms
 
