@@ -17,6 +17,9 @@ module fed_repeat
 contains
     !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
+    !>`"`以外の区切り文字`separator`は，書式項目番号が2番目以降の
+    !>データ編集記述子の前に置かれる．
+    !>
     !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
     !>無制限繰り返しを行う場合，書式項目並びには
@@ -45,7 +48,9 @@ contains
         desc = ""
         do i = 1, num_items - 1
             desc = desc//format_items%get_edit_descriptor_at(i)//','
-            desc = desc//enclose(separator, '"')//','
+
+            if (format_items%is_data_edit_descriptor(i + 1)) &
+                desc = desc//enclose(separator, '"')//','
         end do
         desc = desc//format_items%get_edit_descriptor_at(num_items)//','
         desc = desc//enclose(separator, '"')
