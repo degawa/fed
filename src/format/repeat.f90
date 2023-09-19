@@ -110,7 +110,27 @@ contains
         call repeated_item%set(edit_descriptor_type(count_str//enclose(desc, '(')))
     end function construct_repeated_format_items
 
-    !>編集記述子から反復数をもつ書式項目を生成して返す．
+    !>書式反復数を文字列に変換して返す．
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    pure function get_repeat_count_string(repeat_count) result(count_str)
+        use :: stdlib_strings
+        implicit none
+        integer(int32), intent(in), optional :: repeat_count
+            !! 書式反復数(>0)
+        character(:), allocatable :: count_str
+            !! 文字列に変換された書式反復数
+
+        integer(int32) :: cnt
+
+        if (present(repeat_count)) then
+            cnt = repeat_count
+            if (cnt <= 0) cnt = 1
+            count_str = to_string(cnt)
+        else
+            count_str = "*"
+        end if
+    end function get_repeat_count_string
+
     !>
     !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
