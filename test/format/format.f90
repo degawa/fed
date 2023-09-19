@@ -3,6 +3,9 @@ program test_format
     use :: fed_format_items
     use :: fed_format_item
     use :: fed_editDescriptor
+    use :: fed_editDescriptor_data
+    use :: fed_editDescriptor_control
+    use :: fed_editDescriptor_characterString
     use :: fassert
     implicit none
 
@@ -35,15 +38,74 @@ contains
         type(format_items_type) :: itms
 
         ! setup
-        itms = edit_descriptor_type("desc3") &
-               //edit_descriptor_type("desc4") &
-               //edit_descriptor_type("desc5")
-
+        itms = dat("desc3")//dat("desc4")
         ! test
-        call assert_equal(format(itms, ","), '(desc3,",",desc4,",",desc5)', &
-                          "format(items,separator) should return format specification" &
-                          //" with format-items separated by the separatro")
+        call assert_equal(format(itms, ","), '(desc3,",",desc4)', &
+                          'format(dat("desc3")//dat("desc4"),",") should return ''(desc3,",",desc4)''')
+        ! teardown
+        call itms%destruct()
 
+        ! setup
+        itms = dat("desc3")//str("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '(desc3,",","desc4")', &
+                          'format(dat("desc3")//str("desc4"),",") should return ''(desc3,",","desc4")''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc3")//ctrl("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '(desc3,desc4)', &
+                          'format(dat("desc3")//ctrl("desc4"),",") should return ''(desc4,desc5)''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc3")//dat("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '("desc3",",",desc4)', &
+                          'format(str("desc3")//dat("desc4"),",") should return ''("desc3",",",desc4)''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc3")//str("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '("desc3",",","desc4")', &
+                          'format(str("desc3")//str("desc4"),",") should return ''("desc3",",","desc4")''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc3")//ctrl("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '("desc3",desc4)', &
+                          'format(str("desc3")//ctrl("desc4"),",") should return ''("desc4",desc5)''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc3")//dat("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '(desc3,",",desc4)', &
+                          'format(ctrl("desc3")//dat("desc4"),",") should return ''(desc3,",",desc4)''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc3")//str("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '(desc3,",","desc4")', &
+                          'format(ctrl("desc3")//str("desc4"),",") should return ''(desc3,",","desc4")''')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc3")//ctrl("desc4")
+        ! test
+        call assert_equal(format(itms, ","), '(desc3,desc4)', &
+                          'format(ctrl("desc3")//ctrl("desc4"),",") should return ''(desc4,desc5)''')
         ! teardown
         call itms%destruct()
     end subroutine construct_format_spec_w_sep_returns_format_spec
