@@ -46,9 +46,11 @@ This library provides procedures and operators for generating format specificati
     - [ ] complex
 
 ### control edit descriptors
-- [ ] position
-- [ ] slash
-- [ ] colon
+- [x] position
+    - [x] `T`
+    - [x] `TL`, `TR`
+- [x] slash
+- [x] colon
 - [ ] sign
 - [ ] blank
 - [ ] round
@@ -69,8 +71,13 @@ The current version of fed provides the following functions and an operator:
 | `real([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a edit descriptor for real. <br>`G0`<br>`F<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>E<exponent_digits>`<br>`ES<width>.<decimal_place_digits>`<br>`ES<width>.<decimal_place_digits>E<exponent_digits>`<br>`EN<width>.<decimal_place_digits>`<br>`EN<width>.<decimal_place_digits>E<exponent_digits>`|
 | `complex([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a sequene of edit descriptors for writing complex. <br>`"(",G0,",",G0,")"`<br>`"(",F<width>.<decimal_place_digits>,",",F<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>,",",E<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>E<exponent_digits>,",",E<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>,",",ES<width>.<decimal_place_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>E<exponent_digits>,",",ES<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>,",",EN<width>.<decimal_place_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`|
 | `str(character_string)`                                |generates a character string edit descriptor. |
-| `format(format_items[, separator])`                    |generates a format specification as character.|
-| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>`repeat(repeat(...))` is not supported yet.|
+|`terminate()`|generates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list. |
+|`end_line()`|generates the slash edit descriptor that ends data transfer to or from the current record. |
+|`move(characters)`|generates the TL`|<characters>|` or TR`<characters>` edit descriptor that moves `characters` characters from the current position. |
+|`move_to(column)`|generates the T`<column>` edit descriptor that moves to `column`th column from the left tab limit, with the left tab limit as the 1st column. |
+| `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before the data and character string edit descriptors when `separator` is passed.|
+| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before the data edit descriptor when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
+
 
 ### An operator
 |operator|functionality|
@@ -137,6 +144,31 @@ The current version of fed provides the following functions and an operator:
 
     deallocate (i)
     deallocate (j)
+```
+
+```Fortran
+    use :: fed
+    implicit none
+
+    logical :: l(2, 3)
+
+    print format(repeat(logical(), separator=",")), l
+    !F,F,T,T,F,F,
+    print format(repeat(logical()//terminate(), separator=",")), l
+    !F,F,T,T,F,F
+    print format("["//end_line()//repeat(logical(2), size(l))//end_line()//"]"), l
+    ![
+    ! F F T T F F
+    !]
+
+    print format(str("123456789012345"))
+    print format("|"//move_to(8)//"^")
+    !12345678901234567890
+    !|      ^
+    print format(str("123456789012345"))
+    print format(move_to(8)//move(-3)//"*"//move(5)//"$")
+    !12345678901234567890
+    !    *     $
 ```
 
 ```Fortran
