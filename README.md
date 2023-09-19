@@ -75,8 +75,8 @@ The current version of fed provides the following functions and an operator:
 |`end_line()`|generates the slash edit descriptor that ends data transfer to or from the current record. |
 |`move(characters)`|generates the `TL|<characters>|` or `TR<characters>` edit descriptor that moves `characters` characters from the current position. |
 |`move_to(column)`|generates the `T<column>` edit descriptor that moves to `column`th column from the left tab limit, with the left tab limit as the 1st column. |
-| `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before the data and character string edit descriptors when `separator` is passed.|
-| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before the data edit descriptor when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
+| `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before **data and character string edit descriptors** when `separator` is passed.|
+| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before **data edit descriptors** when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
 
 
 ### An operator
