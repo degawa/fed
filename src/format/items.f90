@@ -145,10 +145,7 @@ contains
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
 
-        integer(int32) :: num_items
-
-        num_items = this%get_number_of_items()
-        if (num_items < 1 .or. (i < 1 .or. num_items < i)) then
+        if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_data_edit_descriptor = .false.
             return
         end if
@@ -164,10 +161,7 @@ contains
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
 
-        integer(int32) :: num_items
-
-        num_items = this%get_number_of_items()
-        if (num_items < 1 .or. (i < 1 .or. num_items < i)) then
+        if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_control_edit_descriptor = .false.
             return
         end if
@@ -183,16 +177,29 @@ contains
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
 
-        integer(int32) :: num_items
-
-        num_items = this%get_number_of_items()
-        if (num_items < 1 .or. (i < 1 .or. num_items < i)) then
+        if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_character_string_edit_descriptor = .false.
             return
         end if
 
         is_character_string_edit_descriptor = this%item(i)%is_character_string_edit_descriptor()
     end function is_character_string_edit_descriptor
+
+    !>書式項目番号が有効範囲外にある場合に`.true.`，
+    !>範囲内にある場合に`.false.`を返す．
+    pure logical function is_item_number_out_of_range(item_number, number_of_items)
+        implicit none
+        integer(int32), intent(in) :: item_number
+            !! 書式項目番号
+        integer(int32), intent(in) :: number_of_items
+            !! 書式項目数
+
+        if (number_of_items < 1 .or. (item_number < 1 .or. number_of_items < item_number)) then
+            is_item_number_out_of_range = .true.
+        else
+            is_item_number_out_of_range = .false.
+        end if
+    end function is_item_number_out_of_range
 
     !>書式項目並びを破棄する．
     subroutine destruct(this)
