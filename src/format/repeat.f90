@@ -123,7 +123,7 @@ contains
     end function get_repeat_count_string
 
     !>`mold`と同じ種類の書式記述子を返す．
-    pure function to_edit_descriptor(desc, mold) result(new_desc)
+    function to_edit_descriptor(desc, mold) result(new_desc)
         use :: fed_editDescriptor_data
         use :: fed_editDescriptor_control
         use :: fed_editDescriptor_characterString

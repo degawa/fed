@@ -109,7 +109,7 @@ contains
 
     !>指定した番号の書式項目を返す．
     !>指定した番号が範囲外の場合，編集記述子が未設定の編集項目が返される．
-    pure function get_item_at(this, item_number) result(format_item)
+    function get_item_at(this, item_number) result(format_item)
         implicit none
         class(format_items_type), intent(in) :: this
             !! 当該実体仮引数
