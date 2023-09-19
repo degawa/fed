@@ -17,6 +17,8 @@ module fed_format_items
     contains
         procedure, private, pass :: set_at => set_edit_descriptor_at
         !* 指定した番号の書式項目の編集記述子を設定
+        procedure, public, pass :: get_item_at
+        !* 指定した番号の書式項目を返却
         procedure, public, pass :: get_edit_descriptor_at
         !* 指定した番号の書式項目の編集記述子を文字列で返却
         procedure, public, pass :: get_number_of_items
@@ -104,6 +106,24 @@ contains
 
         call this%item(item_number)%set(edit_descriptor)
     end subroutine set_edit_descriptor_at
+
+    !>指定した番号の書式項目を返す．
+    !>指定した番号が範囲外の場合，編集記述子が未設定の編集項目が返される．
+    pure function get_item_at(this, item_number) result(format_item)
+        implicit none
+        class(format_items_type), intent(in) :: this
+            !! 当該実体仮引数
+        integer(int32), intent(in) :: item_number
+            !! 書式項目の番号
+        type(format_item_type) :: format_item
+            !! 書式項目
+
+        if (item_number < 1 .or. this%get_number_of_items() < item_number) then
+            return
+        end if
+
+        format_item = this%item(item_number)
+    end function get_item_at
 
     !>指定した番号の書式項目の編集記述子を文字列で返す．
     !>指定した番号が範囲外の場合，長さ0の文字列`""`を返す．
