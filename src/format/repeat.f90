@@ -20,11 +20,9 @@ contains
     !>`"`以外の区切り文字`separator`は，書式項目番号が2番目以降の
     !>データ編集記述子の前に置かれる．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
-    !>@warning
-    !>無制限繰り返しを行う場合，書式項目並びには
-    !>少なくとも一つのデータ編集記述子が必要．
-    !>@endwarning
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
     function construct_repeated_format_items_w_sep(format_items, separator, repeat_count) result(repeated_item)
         use :: strings_enclose
         implicit none
@@ -67,11 +65,9 @@ contains
 
     !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
-    !>@warning
-    !>無制限繰り返しを行う場合，書式項目並びには
-    !>少なくとも一つのデータ編集記述子が必要．
-    !>@endwarning
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
     function construct_repeated_format_items(format_items, repeat_count) result(repeated_item)
         use :: strings_enclose
         implicit none
@@ -158,11 +154,11 @@ contains
         end if
     end function to_edit_descriptor
 
+    !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
-    !>@warning
-    !>無制限繰り返しを行う場合，編集記述子はデータ編集記述子でなければならない．
-    !>@endwarning
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
     function construct_repeated_format_items_by_descriptor(edit_descriptor, repeat_count) result(repeated_item)
         implicit none
         class(edit_descriptor_type), intent(in) :: edit_descriptor
@@ -175,12 +171,14 @@ contains
         repeated_item = repeat(items(edit_descriptor), repeat_count)
     end function construct_repeated_format_items_by_descriptor
 
-    !>編集記述子から反復数をもつ書式項目を生成して返す．
+    !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
-    !>@warning
-    !>無制限繰り返しを行う場合，編集記述子はデータ編集記述子でなければならない．
-    !>@endwarning
+    !>`"`以外の区切り文字`separator`は，書式項目番号が2番目以降の
+    !>データ編集記述子の前に置かれる．
+    !>
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
     function construct_repeated_format_items_w_sep_by_descriptor(edit_descriptor, separator, repeat_count) result(repeated_item)
         implicit none
         class(edit_descriptor_type), intent(in) :: edit_descriptor
