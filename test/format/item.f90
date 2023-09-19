@@ -11,6 +11,8 @@ program test_format_item
     call has_edit_desc_returns_true_when_edit_desc_is_set()
     call destruct_unset_edit_descr()
     call construct_returns_format_item_type_instance()
+    call is_data_edit_desc_returns_true_when_desc_is_data_edit_desc()
+    call is_data_edit_desc_returns_false_when_desc_is_not_data_edit_desc()
 
 contains
     subroutine get_returns_zero_length_string_when_no_desc_is_set()
@@ -87,4 +89,48 @@ contains
                           "item(edit_descriptor) should return a format_item_type instance" &
                           //"containing the edit descriptor specified by the argument")
     end subroutine construct_returns_format_item_type_instance
+
+    subroutine is_data_edit_desc_returns_true_when_desc_is_data_edit_desc()
+        use :: fed_editDescriptor_data
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(dat("descriptor"))
+
+        ! test
+        call assert_true(itm%is_data_edit_descriptor(), &
+                         "is_data_edit_descriptor() should return `.true.` "// &
+                         "when component `edit_descriptor` is `data_edit_descriptor_type`")
+    end subroutine is_data_edit_desc_returns_true_when_desc_is_data_edit_desc
+
+    subroutine is_data_edit_desc_returns_false_when_desc_is_not_data_edit_desc()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(str("descriptor"))
+
+        ! test
+        call assert_false(itm%is_data_edit_descriptor(), &
+                          "is_data_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `character_string_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+
+        ! setup
+        call itm%set(ctrl("descriptor"))
+
+        ! test
+        call assert_false(itm%is_data_edit_descriptor(), &
+                          "is_data_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `control_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+    end subroutine is_data_edit_desc_returns_false_when_desc_is_not_data_edit_desc
 end program test_format_item
