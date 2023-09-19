@@ -18,6 +18,8 @@ program test_format_items
     call is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl()
     call is_str_edit_desc_returns_true_when_item_contains_str()
     call is_str_edit_desc_returns_false_when_desc_item_not_contain_str()
+    call has_data_desc_returns_true_when_itmes_contain_data_desc()
+    call has_data_desc_returns_false_when_itmes_not_contain_data_desc()
 
 contains
     subroutine construct_returns_format_items_type_instance()
@@ -545,4 +547,324 @@ contains
                           "is_character_string_edit_descriptor(i) should return `.false.` "// &
                           "when component `item(i)` does not contain `character_string_edit_descriptor_type`")
     end subroutine is_str_edit_desc_returns_false_when_desc_item_not_contain_str
+
+    subroutine has_data_desc_returns_true_when_itmes_contain_data_desc()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_control
+        use :: fed_editDescriptor_characterString
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = items(dat("desc"))
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//ctrl("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//dat("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//dat//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//dat("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//dat//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//dat("desc")//ctrl("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//dat//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//str("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//str//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//str("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//str//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//ctrl("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//ctrl//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//ctrl("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//ctrl//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = dat("desc")//ctrl("desc")//ctrl("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are dat//ctrl//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//dat("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//dat//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//dat("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//dat//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//dat("desc")//ctrl("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//dat//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//str("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//str//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//ctrl("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are str//ctrl//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//dat("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//dat//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//dat("desc")//str("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//dat//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//dat("desc")//ctrl("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//dat//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//str("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//str//dat')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//ctrl("desc")//dat("desc")
+        ! test
+        call assert_true(itms%has_data_edit_descriptor(), &
+                         '`has_data_edit_desciptor` returns `.true.` when items are ctrl//ctrl//dat')
+        ! teardown
+        call itms%destruct()
+    end subroutine has_data_desc_returns_true_when_itmes_contain_data_desc
+
+    subroutine has_data_desc_returns_false_when_itmes_not_contain_data_desc()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_control
+        use :: fed_editDescriptor_characterString
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = items(str("desc"))
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = items(ctrl("desc"))
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//str("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//str//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//str("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//str//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//ctrl("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//ctrl//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = str("desc")//ctrl("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are str//ctrl//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//str("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//str//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//str("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//str//ctrl')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//ctrl("desc")//str("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//ctrl//str')
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = ctrl("desc")//ctrl("desc")//ctrl("desc")
+        ! test
+        call assert_false(itms%has_data_edit_descriptor(), &
+                          '`has_data_edit_desciptor` returns `.false.` when items are ctrl//ctrl//ctrl')
+        ! teardown
+        call itms%destruct()
+    end subroutine has_data_desc_returns_false_when_itmes_not_contain_data_desc
 end program test_format_items
