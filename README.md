@@ -153,7 +153,7 @@ The current version of fed provides the following functions and an operator:
     logical :: l(2, 3)
 
     print format(repeat(logical(), separator=",")), l
-    !F,F,T,T,F,F,
+    !F,F,T,T,F,F, ! output values may vary
     print format(repeat(logical()//terminate(), separator=",")), l
     !F,F,T,T,F,F
     print format("["//end_line()//repeat(logical(2), size(l))//end_line()//"]"), l
