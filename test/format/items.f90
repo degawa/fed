@@ -14,6 +14,10 @@ program test_format_items
     call cat_op_returns_items_containing_lhs_rhs()
     call is_data_edit_desc_returns_true_when_item_contains_data()
     call is_data_edit_desc_returns_false_when_desc_item_not_contain_data()
+    call is_ctrl_edit_desc_returns_true_when_item_contains_ctrl()
+    call is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl()
+    call is_str_edit_desc_returns_true_when_item_contains_str()
+    call is_str_edit_desc_returns_false_when_desc_item_not_contain_str()
 
 contains
     subroutine construct_returns_format_items_type_instance()
@@ -442,7 +446,103 @@ contains
         call assert_false(itms%is_data_edit_descriptor(5), &
                           "is_data_edit_descriptor(i) should return `.false.` "// &
                           "when component `item(i)` does not contain `data_edit_descriptor_type`")
-
     end subroutine is_data_edit_desc_returns_false_when_desc_item_not_contain_data
 
+    subroutine is_ctrl_edit_desc_returns_true_when_item_contains_ctrl()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_true(itms%is_control_edit_descriptor(3), &
+                         "is_control_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `control_edit_descriptor_type`")
+
+        call assert_true(itms%is_control_edit_descriptor(5), &
+                         "is_control_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `control_edit_descriptor_type`")
+
+    end subroutine is_ctrl_edit_desc_returns_true_when_item_contains_ctrl
+
+    subroutine is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_false(itms%is_control_edit_descriptor(1), &
+                          "is_control_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `control_edit_descriptor_type`")
+
+        call assert_false(itms%is_control_edit_descriptor(2), &
+                          "is_control_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `control_edit_descriptor_type`")
+
+        call assert_false(itms%is_control_edit_descriptor(4), &
+                          "is_control_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `control_edit_descriptor_type`")
+
+        call assert_false(itms%is_control_edit_descriptor(6), &
+                          "is_control_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `control_edit_descriptor_type`")
+    end subroutine is_ctrl_edit_desc_returns_false_when_desc_item_not_contain_ctrl
+
+    subroutine is_str_edit_desc_returns_true_when_item_contains_str()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_true(itms%is_character_string_edit_descriptor(2), &
+                         "is_character_string_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `character_string_edit_descriptor_type`")
+
+        call assert_true(itms%is_character_string_edit_descriptor(4), &
+                         "is_character_string_edit_descriptor(i) should return `.true.` "// &
+                         "when component `item(i)` contains `character_string_edit_descriptor_type`")
+
+    end subroutine is_str_edit_desc_returns_true_when_item_contains_str
+
+    subroutine is_str_edit_desc_returns_false_when_desc_item_not_contain_str()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = item(dat(""))//item(str(""))//item(ctrl(""))//item(str(""))//item(ctrl(""))//item(dat(""))
+
+        ! test
+        call assert_false(itms%is_character_string_edit_descriptor(1), &
+                          "is_character_string_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `character_string_edit_descriptor_type`")
+
+        call assert_false(itms%is_character_string_edit_descriptor(3), &
+                          "is_character_string_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `character_string_edit_descriptor_type`")
+
+        call assert_false(itms%is_character_string_edit_descriptor(5), &
+                          "is_character_string_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `character_string_edit_descriptor_type`")
+
+        call assert_false(itms%is_character_string_edit_descriptor(6), &
+                          "is_character_string_edit_descriptor(i) should return `.false.` "// &
+                          "when component `item(i)` does not contain `character_string_edit_descriptor_type`")
+    end subroutine is_str_edit_desc_returns_false_when_desc_item_not_contain_str
 end program test_format_items
