@@ -17,7 +17,7 @@ module fed_repeat
 contains
     !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば繰り返し数を1とする．
+    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
     !>無制限繰り返しを行う場合，書式項目並びには
     !>少なくとも一つのデータ編集記述子が必要．
@@ -50,7 +50,7 @@ contains
         desc = desc//format_items%get_edit_descriptor_at(num_items)//','
         desc = desc//enclose(separator, '"')
 
-        ! 繰り返し数を文字列に変換
+        ! 書式反復数を文字列に変換
         if (present(repeat_count)) then
             cnt = repeat_count
             if (cnt <= 0) cnt = 1
@@ -64,7 +64,7 @@ contains
 
     !>書式項目並びから反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば繰り返し数を1とする．
+    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
     !>無制限繰り返しを行う場合，書式項目並びには
     !>少なくとも一つのデータ編集記述子が必要．
@@ -93,7 +93,7 @@ contains
         end do
         desc = desc//format_items%get_edit_descriptor_at(num_items)
 
-        ! 繰り返し数を文字列に変換
+        ! 書式反復数を文字列に変換
         if (present(repeat_count)) then
             cnt = repeat_count
             if (cnt <= 0) cnt = 1
@@ -106,14 +106,14 @@ contains
 
     !>編集記述子から反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば繰り返し数を1とする．
+    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
     !>無制限繰り返しを行う場合，編集記述子はデータ編集記述子でなければならない．
     !>@endwarning
     function construct_repeated_format_items_by_descriptor(edit_descriptor, repeat_count) result(repeated_item)
         implicit none
         class(edit_descriptor_type), intent(in) :: edit_descriptor
-            !! 繰り返し数が設定される編集記述子
+            !! 書式反復数が設定される編集記述子
         integer(int32), intent(in), optional :: repeat_count
             !! 書式反復数(>0)
         type(format_item_type) :: repeated_item
@@ -124,14 +124,14 @@ contains
 
     !>編集記述子から反復数をもつ書式項目を生成して返す．
     !>
-    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば繰り返し数を1とする．
+    !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
     !>無制限繰り返しを行う場合，編集記述子はデータ編集記述子でなければならない．
     !>@endwarning
     function construct_repeated_format_items_w_sep_by_descriptor(edit_descriptor, separator, repeat_count) result(repeated_item)
         implicit none
         class(edit_descriptor_type), intent(in) :: edit_descriptor
-            !! 繰り返し数が設定される編集記述子
+            !! 書式反復数が設定される編集記述子
         character(*), intent(in) :: separator
             !! 区切り文字
         integer(int32), intent(in), optional :: repeat_count
