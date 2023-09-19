@@ -13,6 +13,10 @@ program test_format_item
     call construct_returns_format_item_type_instance()
     call is_data_edit_desc_returns_true_when_desc_is_data_edit_desc()
     call is_data_edit_desc_returns_false_when_desc_is_not_data_edit_desc()
+    call is_ctrl_edit_desc_returns_true_when_desc_is_ctrl_edit_desc()
+    call is_ctrl_edit_desc_returns_false_when_desc_is_not_ctrl_edit_desc()
+    call is_str_edit_desc_returns_true_when_desc_is_str_edit_desc()
+    call is_str_edit_desc_returns_false_when_desc_is_not_str_edit_desc()
 
 contains
     subroutine get_returns_zero_length_string_when_no_desc_is_set()
@@ -133,4 +137,92 @@ contains
         ! teardown
         call itm%destruct()
     end subroutine is_data_edit_desc_returns_false_when_desc_is_not_data_edit_desc
+
+    subroutine is_ctrl_edit_desc_returns_true_when_desc_is_ctrl_edit_desc()
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(ctrl("descriptor"))
+
+        ! test
+        call assert_true(itm%is_control_edit_descriptor(), &
+                         "is_control_edit_descriptor() should return `.true.` "// &
+                         "when component `edit_descriptor` is `control_edit_descriptor_type`")
+    end subroutine is_ctrl_edit_desc_returns_true_when_desc_is_ctrl_edit_desc
+
+    subroutine is_ctrl_edit_desc_returns_false_when_desc_is_not_ctrl_edit_desc()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(str("descriptor"))
+
+        ! test
+        call assert_false(itm%is_control_edit_descriptor(), &
+                          "is_control_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `character_string_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+
+        ! setup
+        call itm%set(dat("descriptor"))
+
+        ! test
+        call assert_false(itm%is_control_edit_descriptor(), &
+                          "is_control_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `data_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+    end subroutine is_ctrl_edit_desc_returns_false_when_desc_is_not_ctrl_edit_desc
+
+    subroutine is_str_edit_desc_returns_true_when_desc_is_str_edit_desc()
+        use :: fed_editDescriptor_characterString
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(str("descriptor"))
+
+        ! test
+        call assert_true(itm%is_character_string_edit_descriptor(), &
+                         "is_character_string_edit_descriptor() should return `.true.` "// &
+                         "when component `edit_descriptor` is `character_string_edit_descriptor_type`")
+    end subroutine is_str_edit_desc_returns_true_when_desc_is_str_edit_desc
+
+    subroutine is_str_edit_desc_returns_false_when_desc_is_not_str_edit_desc()
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_characterString
+        use :: fed_editDescriptor_control
+        implicit none
+        type(format_item_type) :: itm
+
+        ! setup
+        call itm%set(dat("descriptor"))
+
+        ! test
+        call assert_false(itm%is_character_string_edit_descriptor(), &
+                          "is_character_string_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `data_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+
+        ! setup
+        call itm%set(ctrl("descriptor"))
+
+        ! test
+        call assert_false(itm%is_character_string_edit_descriptor(), &
+                          "is_character_string_edit_descriptor() should return `.false.` "// &
+                          "when component `edit_descriptor` is `control_edit_descriptor`")
+
+        ! teardown
+        call itm%destruct()
+    end subroutine is_str_edit_desc_returns_false_when_desc_is_not_str_edit_desc
 end program test_format_item
