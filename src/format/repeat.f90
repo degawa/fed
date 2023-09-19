@@ -49,6 +49,7 @@ contains
         end do
         desc = desc//format_items%get_edit_descriptor_at(num_items)//','
         desc = desc//enclose(separator, '"')
+        ! 3(I0,:,",")を実現できるように，書式項目末尾にも必ず区切り文字を付ける
 
         ! 書式反復数を文字列に変換
         if (present(repeat_count)) then
