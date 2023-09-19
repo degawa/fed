@@ -27,6 +27,8 @@ module fed_format_items
         !* 指定した番号の書式項目が制御編集記述子かを検査
         procedure, public, pass :: is_character_string_edit_descriptor
         !* 編集記述子が文字列編集記述子かを検査
+        procedure, public, pass :: has_data_edit_descriptor
+        !* 書式項目並びの中にデータ編集記述子があるかを返却
         procedure, public, pass :: destruct
         !* 書式項目並びを破棄
         final :: finalize
@@ -206,6 +208,26 @@ contains
             is_item_number_out_of_range = .false.
         end if
     end function is_item_number_out_of_range
+
+    !>書式項目並びの中にデータ編集記述子があれば`.true.`，
+    !>なければ`.false.`を返す．
+    pure logical function has_data_edit_descriptor(this)
+        implicit none
+        class(format_items_type), intent(in) :: this
+        !! 当該実体仮引数
+
+        integer(int32) :: num_items, i
+
+        has_data_edit_descriptor = .false.
+        num_items = this%get_number_of_items()
+
+        if (num_items < 1) return
+
+        do i = 1, num_items
+            has_data_edit_descriptor = has_data_edit_descriptor .or. &
+                                       this%item(i)%is_data_edit_descriptor()
+        end do
+    end function has_data_edit_descriptor
 
     !>書式項目並びを破棄する．
     subroutine destruct(this)
