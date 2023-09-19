@@ -131,6 +131,38 @@ contains
         end if
     end function get_repeat_count_string
 
+    !>`mold`と同じ種類の書式記述子を返す．
+    pure function to_edit_descriptor(desc, mold) result(new_desc)
+        use :: fed_editDescriptor_data
+        use :: fed_editDescriptor_control
+        use :: fed_editDescriptor_characterString
+        implicit none
+        character(*), intent(in) :: desc
+            !! 書式記述子
+        type(format_item_type), intent(in) :: mold
+            !! 型見本となる書式項目
+        class(edit_descriptor_type), allocatable :: new_desc
+            !! 書式項目が持つ書式記述子と同じ型の書式記述子
+
+        if (mold%is_data_edit_descriptor()) then
+            allocate (new_desc, source=dat(desc))
+            return
+        end if
+
+        if (mold%is_character_string_edit_descriptor()) then
+            ! source=str(desc)にすると，descが" "で囲まれてしまうため，
+            ! moldで型を確定した後に，setで編集記述子を直接設定する．
+            allocate (new_desc, mold=str(""))
+            call new_desc%set(desc)
+            return
+        end if
+
+        if (mold%is_control_edit_descriptor()) then
+            allocate (new_desc, source=ctrl(desc))
+            return
+        end if
+    end function to_edit_descriptor
+
     !>
     !>@note 書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
     !>@warning
