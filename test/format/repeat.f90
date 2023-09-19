@@ -101,7 +101,7 @@ contains
         ! test
         rep_item = repeat(itms, ",", 2)
         call assert_equal(rep_item%get_edit_descriptor(), '2("desc1",",",desc2,",")', &
-                          "repeat(str('desc1')//dat('desc2'), ',', 3) should return "//'2("desc1",desc2,",")')
+                          "repeat(str('desc1')//dat('desc2'), ',', 3) should return "//'2("desc1",",",desc2,",")')
         ! teardown
         call itms%destruct()
         call rep_item%destruct()
