@@ -23,6 +23,8 @@ module fed_format_items
         !* 書式項目の個数を返却
         procedure, public, pass :: is_data_edit_descriptor
         !* 指定した番号の書式項目がデータ編集記述子かを検査
+        procedure, public, pass :: is_control_edit_descriptor
+        !* 指定した番号の書式項目が制御編集記述子かを検査
         procedure, public, pass :: destruct
         !* 書式項目並びを破棄
         final :: finalize
@@ -151,6 +153,25 @@ contains
 
         is_data_edit_descriptor = this%item(i)%is_data_edit_descriptor()
     end function is_data_edit_descriptor
+
+    !>指定した番号の書式項目が制御編集記述子であれば`.true.`，
+    !>そうでなければ`.false.`を返す．
+    pure logical function is_control_edit_descriptor(this, i)
+        implicit none
+        class(format_items_type), intent(in) :: this
+            !! 当該実体仮引数
+        integer(int32), intent(in) :: i
+
+        integer(int32) :: num_items
+
+        num_items = this%get_number_of_items()
+        if (num_items < 1 .or. (i < 1 .or. num_items < i)) then
+            is_control_edit_descriptor = .false.
+            return
+        end if
+
+        is_control_edit_descriptor = this%item(i)%is_control_edit_descriptor()
+    end function is_control_edit_descriptor
 
     !>書式項目並びを破棄する．
     subroutine destruct(this)
