@@ -22,6 +22,8 @@ program test_format_items
     call is_str_edit_desc_returns_false_when_desc_item_not_contain_str()
     call has_data_desc_returns_true_when_itmes_contain_data_desc()
     call has_data_desc_returns_false_when_itmes_not_contain_data_desc()
+    call get_item_at_returns_item_in_format_items()
+    call get_item_at_returns_empty_item_when_i_is_out_of_range()
 
 contains
     subroutine construct_returns_format_items_type_instance()
@@ -848,4 +850,54 @@ contains
         ! teardown
         call itms%destruct()
     end subroutine has_data_desc_returns_false_when_itmes_not_contain_data_desc
+
+    subroutine get_item_at_returns_item_in_format_items()
+        implicit none
+        type(format_items_type) :: itms
+        type(format_item_type) :: itm
+
+        ! setup
+        itms = str("str_desc")//ctrl("ctrl_desc")//dat("dat_desc")
+        ! test
+        itm = itms%get_item_at(3)
+        call assert_equal(itm%get_edit_descriptor(), "dat_desc", &
+                          '`get_item_at(3)` returns the third item in the format_item')
+
+        itm = itms%get_item_at(1)
+        call assert_equal(itm%get_edit_descriptor(), '"str_desc"', &
+                          '`get_item_at(1)` returns the first item in the format_item')
+
+        itm = itms%get_item_at(2)
+        call assert_equal(itm%get_edit_descriptor(), "ctrl_desc", &
+                          '`get_item_at(2)` returns the second item in the format_item')
+
+        ! teardown
+        call itm%destruct()
+        call itms%destruct()
+    end subroutine get_item_at_returns_item_in_format_items
+
+    subroutine get_item_at_returns_empty_item_when_i_is_out_of_range()
+        implicit none
+        type(format_items_type) :: itms
+        type(format_item_type) :: itm
+
+        ! setup
+        itms = str("str_desc")//ctrl("ctrl_desc")//dat("dat_desc")
+        ! test
+        itm = itms%get_item_at(0)
+        call assert_equal(itm%get_edit_descriptor(), "", &
+                          '`get_item_at(0)` returns an empty item when 0 is out of range')
+
+        itm = itms%get_item_at(4)
+        call assert_equal(itm%get_edit_descriptor(), "", &
+                          '`get_item_at(4)` returns an empty item when 4 is out of range')
+
+        itm = itms%get_item_at(-2)
+        call assert_equal(itm%get_edit_descriptor(), "", &
+                          '`get_item_at(-2)` returns an empty item when -2 is out of range')
+
+        ! teardown
+        call itm%destruct()
+        call itms%destruct()
+    end subroutine get_item_at_returns_empty_item_when_i_is_out_of_range
 end program test_format_items
