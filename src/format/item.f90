@@ -25,6 +25,8 @@ module fed_format_item
         !* 編集記述子がデータ編集記述子かを検査
         procedure, public, pass :: is_control_edit_descriptor
         !* 編集記述子が制御編集記述子かを検査
+        procedure, public, pass :: is_character_string_edit_descriptor
+        !* 編集記述子が文字列編集記述子かを検査
         procedure, public, pass :: destruct
         !* 編集記述子を破棄
         final :: finalize
@@ -94,6 +96,19 @@ contains
         is_control_edit_descriptor = this%has_edit_descriptor() .and. &
                                      extends_type_of(this%edit_descriptor, type_mold)
     end function is_control_edit_descriptor
+
+    !>編集項目が文字列編集記述子であれば`.true.`，そうでなければ`.false.`を返す．
+    pure logical function is_character_string_edit_descriptor(this)
+        use :: fed_editDescriptor_characterString
+        implicit none
+        class(format_item_type), intent(in) :: this
+            !! 当該実体仮引数
+
+        type(character_string_edit_descriptor_type) :: type_mold
+
+        is_character_string_edit_descriptor = this%has_edit_descriptor() .and. &
+                                              extends_type_of(this%edit_descriptor, type_mold)
+    end function is_character_string_edit_descriptor
 
     !>編集記述子を文字列で返す．
     !>編集記述子が設定されていない場合，長さ0の文字列`""`を返す．
