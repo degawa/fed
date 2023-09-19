@@ -139,11 +139,13 @@ contains
 
     !>指定した番号の書式項目がデータ編集記述子であれば`.true.`，
     !>そうでなければ`.false.`を返す．
+    !>`i`が範囲外の場合，あるいは書式項目がない場合も`.false.`を返す．
     pure logical function is_data_edit_descriptor(this, i)
         implicit none
         class(format_items_type), intent(in) :: this
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
+            !! 種別を判定する項目番号
 
         if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_data_edit_descriptor = .false.
@@ -155,11 +157,13 @@ contains
 
     !>指定した番号の書式項目が制御編集記述子であれば`.true.`，
     !>そうでなければ`.false.`を返す．
+    !>`i`が範囲外の場合，あるいは書式項目がない場合も`.false.`を返す．
     pure logical function is_control_edit_descriptor(this, i)
         implicit none
         class(format_items_type), intent(in) :: this
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
+            !! 種別を判定する項目番号
 
         if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_control_edit_descriptor = .false.
@@ -171,11 +175,13 @@ contains
 
     !>指定した番号の書式項目が文字列編集記述子であれば`.true.`，
     !>そうでなければ`.false.`を返す．
+    !>`i`が有効範囲外の場合，あるいは書式項目がない場合も`.false.`を返す．
     pure logical function is_character_string_edit_descriptor(this, i)
         implicit none
         class(format_items_type), intent(in) :: this
             !! 当該実体仮引数
         integer(int32), intent(in) :: i
+            !! 種別を判定する項目番号
 
         if (is_item_number_out_of_range(i, this%get_number_of_items())) then
             is_character_string_edit_descriptor = .false.
