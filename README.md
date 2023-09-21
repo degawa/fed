@@ -79,7 +79,7 @@ The current version of fed provides the following functions and an operator:
 | `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before **data edit descriptors** when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
 
 
-### An operator
+### Operators
 |operator|functionality|
 |:--|:--|
 |`//`|catenates edit descriptors.|
