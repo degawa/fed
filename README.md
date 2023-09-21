@@ -73,7 +73,7 @@ This library provides procedures and operators for generating format specificati
 - [x] character string
 
 ## Overview
-The current version of fed provides the following functions and an operator:
+The current version of fed provides the following functions and operators:
 
 ### Procedures
 |                       procedure                        |                                                                            functionality                                                                             |
