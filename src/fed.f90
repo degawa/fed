@@ -41,14 +41,24 @@ module fed
     public :: repeat
 
     ! enumerators
-    public :: bin_digits, oct_digits, hex_digits
-    public :: exp_form, sci_form, eng_form
+    public :: bin_digits, &
+              oct_digits, &
+              hex_digits
+    public :: exp_form, &
+              sci_form, &
+              eng_form
 
     ! operators
     public :: operator(//)
 
     ! procedures opened to public for aliasing
-    public :: int_bin, int_oct, int_hex
-    public :: real_exp, real_sci, real_eng
-    public :: complex_exp, complex_sci, complex_eng
+    public :: int_bin, &
+              int_oct, &
+              int_hex
+    public :: real_exp, &
+              real_sci, &
+              real_eng
+    public :: complex_exp, &
+              complex_sci, &
+              complex_eng
 end module fed
