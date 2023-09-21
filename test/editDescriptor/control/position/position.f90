@@ -6,7 +6,7 @@ program test_position_edit_descriptor
 
     print '(A)', "# Testing: position edit descriptor"
     call move_returns_position_edit_desc_instance()
-    call move__to_returns_position_edit_desc_instance()
+    call move_to_returns_position_edit_desc_instance()
     call move_returns_TRn_when_passed_n_ge_0()
     call move_returns_TLn_when_passed_n_lt_0()
     call move_to_returns_T1_when_passed_n_le_0()
@@ -20,13 +20,13 @@ contains
         ! test
         allocate (desc, source=move(0))
         call assert_true(same_type_as(desc, type_mold), &
-                         'move(int) should return `colon_edit_descriptor_type` instance')
+                         'move(int) should return `position_edit_descriptor_type` instance')
 
         ! teardown
         deallocate (desc)
     end subroutine move_returns_position_edit_desc_instance
 
-    subroutine move__to_returns_position_edit_desc_instance()
+    subroutine move_to_returns_position_edit_desc_instance()
         implicit none
         class(edit_descriptor_type), allocatable :: desc
         type(position_edit_descriptor_type) :: type_mold
@@ -34,11 +34,11 @@ contains
         ! test
         allocate (desc, source=move_to(0))
         call assert_true(same_type_as(desc, type_mold), &
-                         'move_to(int) should return `colon_edit_descriptor_type` instance')
+                         'move_to(int) should return `position_edit_descriptor_type` instance')
 
         ! teardown
         deallocate (desc)
-    end subroutine move__to_returns_position_edit_desc_instance
+    end subroutine move_to_returns_position_edit_desc_instance
 
     subroutine move_returns_TRn_when_passed_n_ge_0()
         implicit none
