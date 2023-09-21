@@ -51,10 +51,23 @@ This library provides procedures and operators for generating format specificati
     - [x] `TL`, `TR`
 - [x] slash
 - [x] colon
-- [ ] sign
-- [ ] blank
-- [ ] round
-- [ ] decimal
+- [x] sign
+    - [x] `SS`
+    - [x] `SP`
+    - [x] `S`
+- [x] blank
+    - [x] `BN`
+    - [x] `BZ`
+- [x] round
+    - [x] `RU`
+    - [x] `RD`
+    - [x] `RZ`
+    - [x] `RN`
+    - [x] `RC`
+    - [x] `RP`
+- [x] decimal
+    - [x] `DC`
+    - [x] `DP`
 
 ### character string edit descriptor
 - [x] character string
@@ -75,6 +88,10 @@ The current version of fed provides the following functions and an operator:
 |`end_line()`|generates the slash edit descriptor that ends data transfer to or from the current record. |
 |`move(characters)`|generates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position. |
 |`move_to(column)`|generates the `T<column>` edit descriptor that moves to `<column>`th column from the left tab limit, with the left tab limit as the 1st column. |
+|`blank_mode%{null/zero}(format_items)`|generates format items with locally changed blank interpretation mode by placing `BN` or `BZ` edit descriptor before and after the `format_items`. |
+|`decimal_mode%{comma/point}(format_items)`|generates format items with locally changed decimal edit mode by placing `DC` or `DP` edit descriptor before and after the `format_items`. |
+|`rounding_mode%{up/down/zero/nearest/compatible/processor_defined}(format_items)`|generates format items with locally changed rounding mode by placing `RU`, `RD`, `RZ`, `RN`, `RC` or `RP` edit descriptor before and after the `format_items`. |
+|`sign_mode%{suppress/plus/processor_defined}(format_items)`|generates format items with locally changed sign mode by placing `SS`, `SP`, or `S` edit descriptor before and after the `format_items`. |
 | `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before **data and character string edit descriptors** when `separator` is passed.|
 | `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before **data edit descriptors** when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
 
@@ -169,6 +186,35 @@ The current version of fed provides the following functions and an operator:
     print format(move_to(8)//move(-3)//"*"//move(5)//"$")
     !12345678901234567890
     !    *     $
+
+    print format(real()//decimal_mode%comma(real())//real(), separator=" "), 0.123, 0.123, -1.23
+    !0.123000003 0,123000003 -1.23000002
+
+    print format(rounding_mode%down(real(3, 0)) &
+                 //rounding_mode%up(real(3, 0)) &
+                 //rounding_mode%zero(real(3, 0)) &
+                 //rounding_mode%nearest(real(3, 0)), separator=" "), -1.5, -1.5, -1.5, -1.5
+    ! -2. -1. -1. -2.
+
+    print format(sign_mode%plus(int())//int(), separator=" "), 10, 10
+    ! +10 10
+```
+
+```Fortran
+    use :: fed
+    implicit none
+
+    integer :: i
+    character(:), allocatable :: input
+
+    input = ' 1 23 '
+    read (input, format(blank_mode%zero(int(6)))) i
+    print format(int()), i
+    !10230
+
+    read (input, format(blank_mode%null(int(6)))) i
+    print format(int()), i
+    !123
 ```
 
 ```Fortran
@@ -227,7 +273,7 @@ fed defines three categories of user-defined types for constructing Fortran *for
 
 According to the Fortran standard, the *format specification* consists of *format items*. The *format items* is an aggregation of multiple *format item*.  The *edit descriptor* is subdivided into three categories: *data edit descriptor*, *control edit descriptor*, and *character string edit descriptor*. A *format item* is one of *data edit descriptor*, *control edit descriptor*, *character string edit descritpro*, or repeated *format items*.
 
-However, users can use fed without being aware of the differences.
+However, users can use fed without paying attention to the differences between those types.
 
 ## Getting started
 ### Requirements
