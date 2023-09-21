@@ -271,7 +271,6 @@ contains
         type(real_exponential_edit_descriptor_type) :: desc
 
         desc = real_exp() ! 7+1+len("-.E+")
-        print *, desc%get()
         call assert_equal(desc%get(), "E12.7E1", &
                           "real_exp() should return 'E12.7E1'")
 
@@ -485,7 +484,6 @@ contains
         class(real_edit_descriptor_type), allocatable :: desc
 
         desc = real(exp_form) ! 7+1+len("-.E+")
-        print *, desc%get()
         call assert_equal(desc%get(), "E12.7E1", &
                           "real(exp_form) should return 'E12.7E1'")
 
