@@ -21,6 +21,11 @@ module fed
     use :: fed_editDescriptor_control_colon, only:terminate
     use :: fed_editDescriptor_control_slash, only:end_line
     use :: fed_editDescriptor_control_position, only:move, move_to
+    use :: fed_editDescriptor_control_blank, only:blank_mode, blank_mode_null, blank_mode_zero
+    use :: fed_editDescriptor_control_decimal, only:decimal_mode, decimal_mode_comma, decimal_mode_point
+    use :: fed_editDescriptor_control_round, only:rounding_mode, rounding_mode_up, rounding_mode_down, rounding_mode_zero, &
+        rounding_mode_nearest, rounding_mode_compatible, rounding_mode_processor_defined
+    use :: fed_editDescriptor_control_sign, only:sign_mode, sign_mode_suppress, sign_mode_plus, sign_mode_processor_defined
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
     use :: fed_repeat, only:repeat
@@ -37,6 +42,10 @@ module fed
     public :: terminate
     public :: end_line
     public :: move, move_to
+    public :: blank_mode
+    public :: decimal_mode
+    public :: rounding_mode
+    public :: sign_mode
     public :: format
     public :: repeat
 
@@ -61,4 +70,17 @@ module fed
     public :: complex_exp, &
               complex_sci, &
               complex_eng
+    public :: blank_mode_null, &
+              blank_mode_zero
+    public :: decimal_mode_comma, &
+              decimal_mode_point
+    public :: rounding_mode_up, &
+              rounding_mode_down, &
+              rounding_mode_zero, &
+              rounding_mode_nearest, &
+              rounding_mode_compatible, &
+              rounding_mode_processor_defined
+    public :: sign_mode_suppress, &
+              sign_mode_plus, &
+              sign_mode_processor_defined
 end module fed
