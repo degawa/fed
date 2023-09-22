@@ -56,7 +56,7 @@ contains
         count_str = get_repeat_count_string(repeat_count)
 
         if (.not. format_items%has_data_edit_descriptor() .and. count_str == "*") then
-            call repeated_item%set(to_edit_descriptor(desc, format_items%get_item_at(1)))
+            call repeated_item%set(to_edit_descriptor(desc, type_mold=format_items%get_item_at(1)))
             return
         end if
 
@@ -94,7 +94,7 @@ contains
         count_str = get_repeat_count_string(repeat_count)
 
         if (.not. format_items%has_data_edit_descriptor() .and. count_str == "*") then
-            call repeated_item%set(to_edit_descriptor(desc, mold=format_items%get_item_at(1)))
+            call repeated_item%set(to_edit_descriptor(desc, type_mold=format_items%get_item_at(1)))
             return
         end if
 
@@ -122,25 +122,25 @@ contains
         end if
     end function get_repeat_count_string
 
-    !>`mold`と同じ種類の書式記述子を返す．
-    function to_edit_descriptor(desc, mold) result(new_desc)
+    !>`type_mold`と同じ種類の書式記述子を返す．
+    function to_edit_descriptor(desc, type_mold) result(new_desc)
         use :: fed_editDescriptor_data
         use :: fed_editDescriptor_control
         use :: fed_editDescriptor_characterString
         implicit none
         character(*), intent(in) :: desc
             !! 書式記述子
-        type(format_item_type), intent(in) :: mold
+        type(format_item_type), intent(in) :: type_mold
             !! 型見本となる書式項目
         class(edit_descriptor_type), allocatable :: new_desc
             !! 書式項目が持つ書式記述子と同じ型の書式記述子
 
-        if (mold%is_data_edit_descriptor()) then
+        if (type_mold%is_data_edit_descriptor()) then
             allocate (new_desc, source=dat(desc))
             return
         end if
 
-        if (mold%is_character_string_edit_descriptor()) then
+        if (type_mold%is_character_string_edit_descriptor()) then
             ! source=str(desc)にすると，descが" "で囲まれてしまうため，
             ! moldで型を確定した後に，setで編集記述子を直接設定する．
             allocate (new_desc, mold=str(""))
@@ -148,7 +148,7 @@ contains
             return
         end if
 
-        if (mold%is_control_edit_descriptor()) then
+        if (type_mold%is_control_edit_descriptor()) then
             allocate (new_desc, source=ctrl(desc))
             return
         end if
