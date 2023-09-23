@@ -12,6 +12,8 @@ module fed_repeat
         procedure :: construct_repeated_format_items_w_sep
         procedure :: construct_repeated_format_items_by_descriptor
         procedure :: construct_repeated_format_items_w_sep_by_descriptor
+        procedure :: construct_repeated_format_items_by_item
+        procedure :: construct_repeated_format_items_w_sep_by_item
     end interface
 
 contains
@@ -228,4 +230,43 @@ contains
 
         repeated_item = repeat(items(edit_descriptor), separator, repeat_count)
     end function construct_repeated_format_items_w_sep_by_descriptor
+
+    !>書式項目から反復数をもつ書式項目を生成して返す．
+    !>
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
+    function construct_repeated_format_items_by_item(format_item, repeat_count) result(repeated_item)
+        implicit none
+        class(format_item_type), intent(in) :: format_item
+            !! 書式反復数が設定される編集記述子
+        integer(int32), intent(in), optional :: repeat_count
+            !! 書式反復数(>0)
+        type(format_item_type) :: repeated_item
+            !! 反復数をもつ書式項目
+
+        repeated_item = repeat(items(format_item), repeat_count)
+    end function construct_repeated_format_items_by_item
+
+    !>書式項目並びから反復数をもつ書式項目を生成して返す．
+    !>
+    !>`"`以外の区切り文字`separator`は，書式項目番号が2番目以降の
+    !>データ編集記述子の前に置かれる．
+    !>
+    !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
+    !>無制限繰り返しを行う場合，書式項目並びにデータ編集記述子がなければ，
+    !>書式項目並びが書式項目として返される．
+    function construct_repeated_format_items_w_sep_by_item(format_item, separator, repeat_count) result(repeated_item)
+        implicit none
+        class(format_item_type), intent(in) :: format_item
+            !! 書式反復数が設定される編集記述子
+        character(*), intent(in) :: separator
+            !! 区切り文字
+        integer(int32), intent(in), optional :: repeat_count
+            !! 書式反復数(>0)
+        type(format_item_type) :: repeated_item
+            !! 反復数をもつ書式項目
+
+        repeated_item = repeat(items(format_item), separator, repeat_count)
+    end function construct_repeated_format_items_w_sep_by_item
 end module fed_repeat
