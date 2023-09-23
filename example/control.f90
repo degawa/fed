@@ -4,14 +4,15 @@ program ex_control
 
     block
         logical :: l(2, 3)
+        l = .false.
 
         print format(repeat(logical(), separator=",")), l
-        !F,F,T,T,F,F,
+        !F,F,F,F,F,F,
         print format(repeat(logical()//terminate(), separator=",")), l
-        !F,F,T,T,F,F
+        !F,F,F,F,F,F
         print format("["//end_line()//repeat(logical(2), size(l))//end_line()//"]"), l
         ![
-        ! F F T T F F
+        ! F F F F F F
         !]
     end block
 
