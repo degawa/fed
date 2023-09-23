@@ -14,6 +14,7 @@ program test_format
     call construct_format_spec_w_sep_returns_format_spec()
     call construct_format_spec_by_desc_returns_format_spec()
     call construct_format_spec_by_format_item_returns_format_spec()
+    call format_skips_concatenation_when_desc_is_empty()
 
 contains
     subroutine construct_format_spec_returns_format_spec()
@@ -125,4 +126,42 @@ contains
         call assert_equal(format(item(edit_descriptor_type("item"))), '(item)', &
                           "format(item) should return format specification")
     end subroutine construct_format_spec_by_format_item_returns_format_spec
+
+    subroutine format_skips_concatenation_when_desc_is_empty()
+        implicit none
+        type(format_items_type) :: itms
+
+        ! setup
+        itms = edit_descriptor_type("") &
+               //edit_descriptor_type("desc2") &
+               //edit_descriptor_type("desc3")
+        ! test
+        call assert_equal(format(itms), '(desc2,desc3)', &
+                          'format(desc("")//desc("desc2")//desc("desc3")) should return ' &
+                          //"'(desc2,desc3)'")
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = edit_descriptor_type("desc1") &
+               //edit_descriptor_type("") &
+               //edit_descriptor_type("desc3")
+        ! test
+        call assert_equal(format(itms), '(desc1,desc3)', &
+                          'format(desc("desc1")//desc("")//desc("desc3")) should return ' &
+                          //"'(desc1,desc3)'")
+        ! teardown
+        call itms%destruct()
+
+        ! setup
+        itms = edit_descriptor_type("desc1") &
+               //edit_descriptor_type("desc2") &
+               //edit_descriptor_type("")
+        ! test
+        call assert_equal(format(itms), '(desc1,desc2,)', &
+                          'format(desc("desc1")//desc("desc2")//desc("")) should return ' &
+                          //"'(desc1,desc2,)'")
+        ! teardown
+        call itms%destruct()
+    end subroutine format_skips_concatenation_when_desc_is_empty
 end program test_format
