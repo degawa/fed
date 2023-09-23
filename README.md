@@ -266,6 +266,22 @@ The current version of fed provides the following functions and operators:
         io_message = ""
     end subroutine formatted_write
 ```
+
+```Fortran
+    use :: fed
+    implicit none
+
+    logical :: l(4), l3d(2, 3)
+    l = .false.
+    l3d = .false.
+
+    print format(array(logical(), size(l), ",", "[")), l
+    ![F,F,F,F]
+
+    print format(array(logical(), shape(l3d), separator=",", bracket_open="[")), l3d
+    ![[F,F],[F,F],[F,F]]
+```
+
 ### Types for internal representation
 fed defines three categories of user-defined types for constructing Fortran *format specification*.
 - type for *format items*
