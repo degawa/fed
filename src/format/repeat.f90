@@ -35,24 +35,10 @@ contains
         type(format_item_type) :: repeated_item
             !! 反復数をもつ書式項目
 
-        integer(int32) :: i, num_items
-        character(:), allocatable :: desc, count_str, desc_i
+        character(:), allocatable :: desc, count_str
 
         ! 書式項目並びの編集記述子を結合する
-        num_items = format_items%get_number_of_items()
-
-        desc = ""
-        do i = 1, num_items - 1
-            desc_i = format_items%get_edit_descriptor_at(i)
-            if (desc_i == "") cycle
-
-            desc = desc//desc_i//','
-
-            if (format_items%is_data_edit_descriptor(i + 1)) &
-                desc = desc//enclose(separator, '"')//','
-        end do
-        desc_i = format_items%get_edit_descriptor_at(i)
-        if (desc_i /= "") desc = desc//desc_i//','
+        desc = catenate_format_items(format_items, separator)
 
         ! 書式項目が無効だった場合（repeat(move(0), 3, separator=",")等）は，
         ! 空の編集記述子を持つ書式項目を返す
@@ -62,7 +48,7 @@ contains
         end if
 
         ! 3(I0,:,",")を実現できるように，書式項目末尾にも必ず区切り文字を付ける
-        desc = desc//enclose(separator, '"')
+        desc = desc//','//enclose(separator, '"')
 
         ! 書式反復数を文字列に変換
         count_str = get_repeat_count_string(repeat_count)
@@ -90,21 +76,10 @@ contains
         type(format_item_type) :: repeated_item
             !! 反復数をもつ書式項目
 
-        integer(int32) :: i, num_items
-        character(:), allocatable :: desc, count_str, desc_i
+        character(:), allocatable :: desc, count_str
 
         ! 書式項目並びの編集記述子を結合する
-        num_items = format_items%get_number_of_items()
-
-        desc = ""
-        do i = 1, num_items - 1
-            desc_i = format_items%get_edit_descriptor_at(i)
-            if (desc_i == "") cycle
-
-            desc = desc//desc_i//','
-        end do
-        desc_i = format_items%get_edit_descriptor_at(num_items)
-        if (desc_i /= "") desc = desc//desc_i
+        desc = catenate_format_items(format_items)
 
         ! 書式項目が無効だった場合（repeat(move(0), 3)等）は，
         ! 空の編集記述子を持つ書式項目を返す
@@ -123,6 +98,44 @@ contains
 
         call repeated_item%set(to_edit_descriptor(count_str//enclose(desc, '('), format_items%get_item_at(1)))
     end function construct_repeated_format_items
+
+    !>書式項目並びの編集記述子を結合して返す．
+    pure function catenate_format_items(format_items, separator) result(desc)
+        use :: strings_enclose
+        implicit none
+        type(format_items_type), intent(in) :: format_items
+            !! 反復数が設定される書式項目並び
+        character(*), intent(in), optional :: separator
+            !! 区切り文字
+        character(:), allocatable :: desc
+
+        integer(int32) :: num_items, i
+        character(:), allocatable :: desc_i, enclosed_separator_w_item_sep
+
+        ! 区切り文字が渡されていれば'",",'を作り，
+        ! 渡されていなければ空白''とする．
+        if (present(separator)) then
+            enclosed_separator_w_item_sep = enclose(separator, '"')//','
+        else
+            enclosed_separator_w_item_sep = ""
+        end if
+
+        ! 書式項目並びの編集記述子を結合する
+        num_items = format_items%get_number_of_items()
+
+        desc = ""
+        do i = 1, num_items - 1
+            desc_i = format_items%get_edit_descriptor_at(i)
+            if (desc_i == "") cycle
+
+            desc = desc//desc_i//','
+
+            if (format_items%is_data_edit_descriptor(i + 1)) &
+                desc = desc//enclosed_separator_w_item_sep
+        end do
+        desc_i = format_items%get_edit_descriptor_at(i)
+        if (desc_i /= "") desc = desc//desc_i
+    end function catenate_format_items
 
     !>書式反復数を文字列に変換して返す．
     !>書式反復数がなければ無制限繰り返し，0以下であれば書式反復数を1とする．
