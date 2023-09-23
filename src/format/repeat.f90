@@ -36,21 +36,33 @@ contains
             !! 反復数をもつ書式項目
 
         integer(int32) :: i, num_items
-        character(:), allocatable :: desc, count_str
+        character(:), allocatable :: desc, count_str, desc_i
 
         ! 書式項目並びの編集記述子を結合する
         num_items = format_items%get_number_of_items()
 
         desc = ""
         do i = 1, num_items - 1
-            desc = desc//format_items%get_edit_descriptor_at(i)//','
+            desc_i = format_items%get_edit_descriptor_at(i)
+            if (desc_i == "") cycle
+
+            desc = desc//desc_i//','
 
             if (format_items%is_data_edit_descriptor(i + 1)) &
                 desc = desc//enclose(separator, '"')//','
         end do
-        desc = desc//format_items%get_edit_descriptor_at(num_items)//','
-        desc = desc//enclose(separator, '"')
+        desc_i = format_items%get_edit_descriptor_at(i)
+        if (desc_i /= "") desc = desc//desc_i//','
+
+        ! 書式項目が無効だった場合（repeat(move(0), 3, separator=",")等）は，
+        ! 空の編集記述子を持つ書式項目を返す
+        if (desc == "") then
+            call repeated_item%set(edit_descriptor_type(""))
+            return
+        end if
+
         ! 3(I0,:,",")を実現できるように，書式項目末尾にも必ず区切り文字を付ける
+        desc = desc//enclose(separator, '"')
 
         ! 書式反復数を文字列に変換
         count_str = get_repeat_count_string(repeat_count)
@@ -79,16 +91,27 @@ contains
             !! 反復数をもつ書式項目
 
         integer(int32) :: i, num_items
-        character(:), allocatable :: desc, count_str
+        character(:), allocatable :: desc, count_str, desc_i
 
         ! 書式項目並びの編集記述子を結合する
         num_items = format_items%get_number_of_items()
 
         desc = ""
         do i = 1, num_items - 1
-            desc = desc//format_items%get_edit_descriptor_at(i)//','
+            desc_i = format_items%get_edit_descriptor_at(i)
+            if (desc_i == "") cycle
+
+            desc = desc//desc_i//','
         end do
-        desc = desc//format_items%get_edit_descriptor_at(num_items)
+        desc_i = format_items%get_edit_descriptor_at(num_items)
+        if (desc_i /= "") desc = desc//desc_i
+
+        ! 書式項目が無効だった場合（repeat(move(0), 3)等）は，
+        ! 空の編集記述子を持つ書式項目を返す
+        if (desc == "") then
+            call repeated_item%set(edit_descriptor_type(""))
+            return
+        end if
 
         ! 書式反復数を文字列に変換
         count_str = get_repeat_count_string(repeat_count)
