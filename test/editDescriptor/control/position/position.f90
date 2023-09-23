@@ -18,7 +18,7 @@ contains
         type(position_edit_descriptor_type) :: type_mold
 
         ! test
-        allocate (desc, source=move(0))
+        allocate (desc, source=move(1))
         call assert_true(same_type_as(desc, type_mold), &
                          'move(int) should return `position_edit_descriptor_type` instance')
 
@@ -32,7 +32,7 @@ contains
         type(position_edit_descriptor_type) :: type_mold
 
         ! test
-        allocate (desc, source=move_to(0))
+        allocate (desc, source=move_to(1))
         call assert_true(same_type_as(desc, type_mold), &
                          'move_to(int) should return `position_edit_descriptor_type` instance')
 
@@ -46,8 +46,8 @@ contains
 
         ! test
         desc = move(0)
-        call assert_equal(desc%get(), "TR0", &
-                          'move(0) should return "TR0"')
+        call assert_equal(desc%get(), "", &
+                          'move(0) should return empty descriptor ""')
 
         ! teardown
         call desc%destruct()
