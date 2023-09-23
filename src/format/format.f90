@@ -24,13 +24,21 @@ contains
             !! 書式仕様
 
         integer(int32) :: i, num_items
+        character(:), allocatable :: desc_i
+
         num_items = format_items%get_number_of_items()
 
         format_spec = ""
         do i = 1, num_items - 1
-            format_spec = format_spec//format_items%get_edit_descriptor_at(i)//','
+            desc_i = format_items%get_edit_descriptor_at(i)
+            if (desc_i == "") cycle
+
+            format_spec = format_spec//desc_i//','
         end do
-        format_spec = format_spec//format_items%get_edit_descriptor_at(num_items)
+        desc_i = format_items%get_edit_descriptor_at(num_items)
+        if (desc_i /= "") format_spec = format_spec//desc_i
+        ! 最後の要素が空の場合，(A,)のように最後にカンマだけが残るが
+        ! これは問題にならないので，特別な対処は行わない
 
         format_spec = enclose(format_spec, '(')
     end function construct_format_specification
@@ -49,16 +57,24 @@ contains
             !! 書式仕様
 
         integer(int32) :: i, num_items
+        character(:), allocatable :: desc_i
+
         num_items = format_items%get_number_of_items()
 
         format_spec = ""
         do i = 1, num_items - 1
-            format_spec = format_spec//format_items%get_edit_descriptor_at(i)//','
+            desc_i = format_items%get_edit_descriptor_at(i)
+            if (desc_i == "") cycle
+
+            format_spec = format_spec//desc_i//','
 
             if (.not. format_items%is_control_edit_descriptor(i + 1)) &
                 format_spec = format_spec//enclose(separator, '"')//','
         end do
-        format_spec = format_spec//format_items%get_edit_descriptor_at(num_items)
+        desc_i = format_items%get_edit_descriptor_at(num_items)
+        if (desc_i /= "") format_spec = format_spec//desc_i
+        ! 最後の要素が空の場合，(A,)のように最後にカンマだけが残るが
+        ! これは問題にならないので，特別な対処は行わない
 
         format_spec = enclose(format_spec, '(')
     end function construct_format_specification_w_sep
