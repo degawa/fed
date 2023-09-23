@@ -86,14 +86,14 @@ The current version of fed provides the following functions and operators:
 | `str(character_string)`                                |generates a character string edit descriptor. |
 |`terminate()`|generates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list. |
 |`end_line()`|generates the slash edit descriptor that ends data transfer to or from the current record. |
-|`move(characters)`|generates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position. |
+|`move(characters)`|generates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position. `characters` must not be zero.|
 |`move_to(column)`|generates the `T<column>` edit descriptor that moves to `<column>`th column from the left tab limit, with the left tab limit as the 1st column. |
 |`blank_mode%{null/zero}(format_items)`|generates format items with locally changed blank interpretation mode by placing `BN` or `BZ` edit descriptor before and after the `format_items`. |
 |`decimal_mode%{comma/point}(format_items)`|generates format items with locally changed decimal edit mode by placing `DC` or `DP` edit descriptor before and after the `format_items`. |
 |`rounding_mode%{up/down/zero/nearest/compatible/processor_defined}(format_items)`|generates format items with locally changed rounding mode by placing `RU`, `RD`, `RZ`, `RN`, `RC` or `RP` edit descriptor before and after the `format_items`. |
 |`sign_mode%{suppress/plus/processor_defined}(format_items)`|generates format items with locally changed sign mode by placing `SS`, `SP`, or `S` edit descriptor before and after the `format_items`. |
-| `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before **data and character string edit descriptors** when `separator` is passed.|
-| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before **data edit descriptors** when `separator` is passed.<br>`repeat(repeat(...))` is not supported yet.|
+| `format(format_items[, separator])`                    |generates a format specification as characters.<br>The separator is placed before **data and character string edit descriptors** when `separator` is passed. `separator` must not be `"`|
+| `repeat(format_items[, separator][, repeat_count])`    |generates a repeated/unlimited format item.<br>The separator is placed before **data edit descriptors** when `separator` is passed.<br>`separator` must not be `"`|
 
 
 ### Operators
