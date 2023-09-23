@@ -15,6 +15,8 @@ program test_repeat
     call construct_rep_fmt_itms_by_desc_returns_repeated_fmt_item()
     call construct_rep_fmt_itms_w_sep_by_desc_returns_repeated_fmt_item()
     call repeat_skips_concatenation_when_desc_is_empty()
+    call construct_rep_fmt_itms_by_item_returns_repeated_fmt_item()
+    call construct_rep_fmt_itms_w_sep_by_item_returns_repeated_fmt_item()
 
 contains
     subroutine construct_rep_fmt_itms_returns_repeated_fmt_item()
@@ -233,4 +235,28 @@ contains
         ! teardown
         call rep_item%destruct()
     end subroutine repeat_skips_concatenation_when_desc_is_empty
+
+    subroutine construct_rep_fmt_itms_by_item_returns_repeated_fmt_item()
+        implicit none
+        type(format_item_type) :: rep_item
+
+        ! test
+        rep_item = repeat(item(dat("desc1")), 5)
+        call assert_equal(rep_item%get_edit_descriptor(), '5(desc1)', &
+                          "repeat(item(desc('desc1')), 5) should return '5(desc1)'")
+        ! teardown
+        call rep_item%destruct()
+    end subroutine construct_rep_fmt_itms_by_item_returns_repeated_fmt_item
+
+    subroutine construct_rep_fmt_itms_w_sep_by_item_returns_repeated_fmt_item()
+        implicit none
+        type(format_item_type) :: rep_item
+
+        ! test
+        rep_item = repeat(item(dat("desc1")), ",", 4)
+        call assert_equal(rep_item%get_edit_descriptor(), '4(desc1,",")', &
+                          "repeat(item(desc('desc1')), ',', 4) should return "//'4(desc1,",")')
+        ! teardown
+        call rep_item%destruct()
+    end subroutine construct_rep_fmt_itms_w_sep_by_item_returns_repeated_fmt_item
 end program test_repeat
