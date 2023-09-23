@@ -23,6 +23,10 @@ program ex_control
     print format(move_to(8)//move(-3)//"*"//move(5)//"$")
     !12345678901234567890
     !    *     $
+    print format(str("123456789012345"))
+    print format(move_to(8)//"*"//move(0)//"^")
+    !12345678901234567890
+    !       *^
 
     print format(real()//decimal_mode%comma(real())//real(), separator=" "), 0.123, 0.123, -1.23
     !0.123000003 0,123000003 -1.23000002
