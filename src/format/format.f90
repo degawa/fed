@@ -7,42 +7,12 @@ module fed_format
 
     !>書式仕様のコンストラクタ
     interface format
-        procedure :: construct_format_specification
         procedure :: construct_format_specification_w_sep
         procedure :: construct_format_specification_by_descriptor
         procedure :: construct_format_specification_by_format_item
     end interface
 
 contains
-    !>書式項目並びから書式仕様を文字列で生成して返す．
-    pure function construct_format_specification(format_items) result(format_spec)
-        use :: strings_enclose
-        implicit none
-        type(format_items_type), intent(in) :: format_items
-            !! 書式項目並び
-        character(:), allocatable :: format_spec
-            !! 書式仕様
-
-        integer(int32) :: i, num_items
-        character(:), allocatable :: desc_i
-
-        num_items = format_items%get_number_of_items()
-
-        format_spec = ""
-        do i = 1, num_items - 1
-            desc_i = format_items%get_edit_descriptor_at(i)
-            if (desc_i == "") cycle
-
-            format_spec = format_spec//desc_i//','
-        end do
-        desc_i = format_items%get_edit_descriptor_at(num_items)
-        if (desc_i /= "") format_spec = format_spec//desc_i
-        ! 最後の要素が空の場合，(A,)のように最後にカンマだけが残るが
-        ! これは問題にならないので，特別な対処は行わない
-
-        format_spec = enclose(format_spec, '(')
-    end function construct_format_specification
-
     !>書式項目並びから書式仕様を文字列で生成して返す．
     !>`"`以外の区切り文字`separator`は，書式項目番号が2番目以降の
     !>データ編集記述子あるいは文字列編集記述子の前に置かれる．
@@ -51,13 +21,21 @@ contains
         implicit none
         type(format_items_type), intent(in) :: format_items
             !! 書式項目並び
-        character(*), intent(in) :: separator
+        character(*), intent(in), optional :: separator
             !! 区切り文字（`"`以外）
         character(:), allocatable :: format_spec
             !! 書式仕様
 
         integer(int32) :: i, num_items
-        character(:), allocatable :: desc_i
+        character(:), allocatable :: desc_i, enclosed_separator_w_item_sep
+
+        ! 区切り文字が渡されていれば'",",'を作り，
+        ! 渡されていなければ空白''とする．
+        if (present(separator)) then
+            enclosed_separator_w_item_sep = enclose(separator, '"')//','
+        else
+            enclosed_separator_w_item_sep = ""
+        end if
 
         num_items = format_items%get_number_of_items()
 
@@ -69,7 +47,7 @@ contains
             format_spec = format_spec//desc_i//','
 
             if (.not. format_items%is_control_edit_descriptor(i + 1)) &
-                format_spec = format_spec//enclose(separator, '"')//','
+                format_spec = format_spec//enclosed_separator_w_item_sep
         end do
         desc_i = format_items%get_edit_descriptor_at(num_items)
         if (desc_i /= "") format_spec = format_spec//desc_i
