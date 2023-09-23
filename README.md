@@ -38,12 +38,12 @@ This library provides procedures and operators for generating format specificati
     - [x] `ES` (scientific form)
     - [ ] ~~`EX` (hexadecimal-significand form)~~
 - [x] user-defined type
-- [ ] arrays
-    - [ ] character
-    - [ ] logical
-    - [ ] integer
-    - [ ] real
-    - [ ] complex
+- [x] arrays
+    - [x] character
+    - [x] logical
+    - [x] integer
+    - [x] real
+    - [x] complex
 
 ### control edit descriptors
 - [x] position
@@ -84,6 +84,7 @@ The current version of fed provides the following functions and operators:
 | `real([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a edit descriptor for real. <br>`G0`<br>`F<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>`<br>`E<width>.<decimal_place_digits>E<exponent_digits>`<br>`ES<width>.<decimal_place_digits>`<br>`ES<width>.<decimal_place_digits>E<exponent_digits>`<br>`EN<width>.<decimal_place_digits>`<br>`EN<width>.<decimal_place_digits>E<exponent_digits>`|
 | `complex([form={exp_form/sci_form/eng_form},][width,[decimal_place_digits,[exponent_digits]]])`|generates a sequene of edit descriptors for writing complex. <br>`"(",G0,",",G0,")"`<br>`"(",F<width>.<decimal_place_digits>,",",F<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>,",",E<width>.<decimal_place_digits>,")"`<br>`"(",E<width>.<decimal_place_digits>E<exponent_digits>,",",E<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>,",",ES<width>.<decimal_place_digits>,")"`<br>`"(",ES<width>.<decimal_place_digits>E<exponent_digits>,",",ES<width>.<decimal_place_digits>E<exponent_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>,",",EN<width>.<decimal_place_digits>,")"`<br>`"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`|
 | `str(character_string)`                                |generates a character string edit descriptor. |
+|`array(data_edit_descriptor, {array_size/array_shape}[,separator][,bracket_open])`|creates a sequence of edit descriptors for writing an array.|
 |`terminate()`|generates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list. |
 |`end_line()`|generates the slash edit descriptor that ends data transfer to or from the current record. |
 |`move(characters)`|generates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position. `characters` must not be zero.|
