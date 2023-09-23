@@ -29,6 +29,7 @@ module fed
     use :: fed_format, only:format
     use :: fed_format_items, only:operator(//)
     use :: fed_repeat, only:repeat
+    use :: fed_array, only:array
     implicit none
     private
     ! procedures
@@ -48,6 +49,7 @@ module fed
     public :: sign_mode
     public :: format
     public :: repeat
+    public :: array
 
     ! enumerators
     public :: bin_digits, &
