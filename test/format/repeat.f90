@@ -14,6 +14,7 @@ program test_repeat
     call construct_rep_fmt_itms_w_sep_returns_repeated_fmt_item()
     call construct_rep_fmt_itms_by_desc_returns_repeated_fmt_item()
     call construct_rep_fmt_itms_w_sep_by_desc_returns_repeated_fmt_item()
+    call repeat_skips_concatenation_when_desc_is_empty()
 
 contains
     subroutine construct_rep_fmt_itms_returns_repeated_fmt_item()
@@ -180,4 +181,56 @@ contains
         ! teardown
         call rep_item%destruct()
     end subroutine construct_rep_fmt_itms_w_sep_by_desc_returns_repeated_fmt_item
+
+    subroutine repeat_skips_concatenation_when_desc_is_empty()
+        implicit none
+        type(format_item_type) :: rep_item
+
+        ! test
+        rep_item = repeat(dat(""), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '', &
+                          'repeat(desc(""), 3) should return empty format item')
+        ! teardown
+        call rep_item%destruct()
+
+        ! test
+        rep_item = repeat(dat("")//dat("desc2"), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '3(desc2)', &
+                          'repeat(desc("")//desc("desc2"), 3) should return ' &
+                          //"3(desc2)")
+        ! teardown
+        call rep_item%destruct()
+
+        ! test
+        rep_item = repeat(dat("desc1")//dat(""), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '3(desc1,)', &
+                          'repeat(desc("desc1")//desc(""), 3) should return ' &
+                          //"3(desc1,)")
+        ! teardown
+        call rep_item%destruct()
+
+        ! test
+        rep_item = repeat(dat("desc1")//dat("")//dat("desc3"), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '3(desc1,desc3)', &
+                          'repeat(desc("desc1")//desc("")//desc("desc3), 3) should return ' &
+                          //"3(desc1,desc3)")
+        ! teardown
+        call rep_item%destruct()
+
+        ! test
+        rep_item = repeat(dat("")//dat("desc2")//dat("desc3"), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '3(desc2,desc3)', &
+                          'repeat(desc("")//desc("desc2")//desc("desc3), 3) should return ' &
+                          //"3(desc2,desc3)")
+        ! teardown
+        call rep_item%destruct()
+
+        ! test
+        rep_item = repeat(dat("desc1")//dat("desc2")//dat(""), 3)
+        call assert_equal(rep_item%get_edit_descriptor(), '3(desc1,desc2,)', &
+                          'repeat(desc("desc1")//desc("desc2")//desc("), 3) should return ' &
+                          //"3(desc1,desc2,)")
+        ! teardown
+        call rep_item%destruct()
+    end subroutine repeat_skips_concatenation_when_desc_is_empty
 end program test_repeat
