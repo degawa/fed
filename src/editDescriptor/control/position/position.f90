@@ -29,12 +29,13 @@ module fed_editDescriptor_control_position
     interface move_to
         procedure :: construct_position_edit_descriptor_abs
     end interface
+
 contains
     !>position_edit_descriptor_typeインスタンスを生成して返す．
     !>現在位置から`character`文字移動する．
-    !>`character`が0以上の場合，`TRn`形編集記述子が設定され，
-    !>nにはcharacterが用いられる．0未満の場合は`TLn`形編集記述子が設定され，
-    !>nには|character|が設定される．
+    !>`character`が1以上の場合，`TRn`形編集記述子が設定され，nにはcharacterが用いられる．
+    !>-1以下の場合は`TLn`形編集記述子が設定され，nには|character|が設定される．
+    !>nが0の場合は，空の制御編集記述子が設定される．
     pure function construct_position_edit_descriptor_rel(characters) result(new_pos_desc)
         implicit none
         integer(int32), intent(in) :: characters
@@ -42,12 +43,21 @@ contains
         type(position_edit_descriptor_type) :: new_pos_desc
             !! 生成されるインスタンス
 
-        if (characters >= 0) then
+        if (characters == 0) then
+            call new_pos_desc%set("")
+            return
+        end if
+
+        if (characters >= 1) then
             call new_pos_desc%set(forward_tab_edit_descriptor_symbol &
                                   //to_string(characters))
-        else
+            return
+        end if
+
+        if (characters <= -1) then
             call new_pos_desc%set(backward_tab_edit_descriptor_symbol &
                                   //to_string(abs(characters)))
+            return
         end if
     end function construct_position_edit_descriptor_rel
 
