@@ -18,6 +18,7 @@ contains
     !>データ編集記述子あるいは文字列編集記述子の前に置かれる．
     pure function construct_format_specification_w_sep(format_items, separator) result(format_spec)
         use :: strings_enclose
+        use :: fed_format_items, only:format_item_separator
         implicit none
         type(format_items_type), intent(in) :: format_items
             !! 書式項目並び
@@ -32,7 +33,7 @@ contains
         ! 区切り文字が渡されていれば'",",'を作り，
         ! 渡されていなければ空白''とする．
         if (present(separator)) then
-            enclosed_separator_w_item_sep = enclose(separator, '"')//','
+            enclosed_separator_w_item_sep = enclose(separator, '"')//format_item_separator
         else
             enclosed_separator_w_item_sep = ""
         end if
@@ -44,7 +45,7 @@ contains
             desc_i = format_items%get_edit_descriptor_at(i)
             if (desc_i == "") cycle
 
-            format_spec = format_spec//desc_i//','
+            format_spec = format_spec//desc_i//format_item_separator
 
             if (.not. format_items%is_control_edit_descriptor(i + 1)) &
                 format_spec = format_spec//enclosed_separator_w_item_sep

@@ -50,7 +50,7 @@ contains
         end if
 
         ! 3(I0,:,",")を実現できるように，書式項目末尾にも必ず区切り文字を付ける
-        desc = desc//','//enclose(separator, '"')
+        desc = desc//format_item_separator//enclose(separator, '"')
 
         ! 書式反復数を文字列に変換
         count_str = get_repeat_count_string(repeat_count)
@@ -117,7 +117,7 @@ contains
         ! 区切り文字が渡されていれば'",",'を作り，
         ! 渡されていなければ空白''とする．
         if (present(separator)) then
-            enclosed_separator_w_item_sep = enclose(separator, '"')//','
+            enclosed_separator_w_item_sep = enclose(separator, '"')//format_item_separator
         else
             enclosed_separator_w_item_sep = ""
         end if
@@ -130,7 +130,7 @@ contains
             desc_i = format_items%get_edit_descriptor_at(i)
             if (desc_i == "") cycle
 
-            desc = desc//desc_i//','
+            desc = desc//desc_i//format_item_separator
 
             if (format_items%is_data_edit_descriptor(i + 1)) &
                 desc = desc//enclosed_separator_w_item_sep

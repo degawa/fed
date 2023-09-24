@@ -93,7 +93,7 @@ contains
     pure function catenate_brackets(desc, bracket_open, separator) result(enclosed_desc)
         use :: strings_enclose
         use :: fed_editDescriptor_control_position
-        ! use :: fed_format_items, only:format_item_separator
+        use :: fed_format_items, only:format_item_separator
         implicit none
         character(*), intent(in) :: desc
             !! 編集記述子
@@ -125,9 +125,9 @@ contains
             move_to_separator = move(-len_separator)
             overwriting_spaces = repeat(" ", len_separator)
             enclosed_desc = desc &
-                            //','//move_to_separator%get() &
-                            //','//enclose(overwriting_spaces, '"') &
-                            //','//move_to_separator%get()
+                            //format_item_separator//move_to_separator%get() &
+                            //format_item_separator//enclose(overwriting_spaces, '"') &
+                            //format_item_separator//move_to_separator%get()
             return
         end if
 
@@ -136,8 +136,8 @@ contains
         select case (len_separator)
         case (0)
             enclosed_desc = enclose(bracket_open, '"') &
-                            //','//desc &
-                            //','//enclose(bracket_close, '"')
+                            //format_item_separator//desc &
+                            //format_item_separator//enclose(bracket_close, '"')
 
         case (1)
             ! 要素末尾に区切り文字が置かれる問題を回避するため，
@@ -145,9 +145,9 @@ contains
             move_to_separator = move(-len_separator)
 
             enclosed_desc = enclose(bracket_open, '"') &
-                            //','//desc &
-                            //','//move_to_separator%get() &
-                            //','//enclose(bracket_close, '"')
+                            //format_item_separator//desc &
+                            //format_item_separator//move_to_separator%get() &
+                            //format_item_separator//enclose(bracket_close, '"')
 
         case default
             ! 要素末尾に区切り文字が置かれる問題を回避するため，
@@ -158,10 +158,10 @@ contains
             overwriting_spaces = repeat(" ", len_separator - 1)
 
             enclosed_desc = enclose(bracket_open, '"') &
-                            //','//desc &
-                            //','//move_to_separator%get() &
-                            //','//enclose(bracket_close//overwriting_spaces, '"') &
-                            //','//move_after_closing_bracket%get()
+                            //format_item_separator//desc &
+                            //format_item_separator//move_to_separator%get() &
+                            //format_item_separator//enclose(bracket_close//overwriting_spaces, '"') &
+                            //format_item_separator//move_after_closing_bracket%get()
         end select
     end function catenate_brackets
 end module fed_array

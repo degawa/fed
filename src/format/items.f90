@@ -8,6 +8,9 @@ module fed_format_items
     public :: items
     public :: operator(//)
 
+    character(*), public, parameter :: format_item_separator = ','
+        !! 書式項目の区切り
+
     !>書式項目並びを取り扱う派生型．
     !>書式項目並びは，複数の書式項目から構成されるので，
     !>それらを書式項目の配列を用いて表現する．
