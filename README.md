@@ -288,7 +288,7 @@ fed defines three categories of user-defined types for constructing Fortran *for
 - type for *format item*
 - types for *edit descriptor*
 
-According to the Fortran standard, the *format specification* consists of *format items*. The *format items* is an aggregation of multiple *format item*.  The *edit descriptor* is subdivided into three categories: *data edit descriptor*, *control edit descriptor*, and *character string edit descriptor*. A *format item* is one of *data edit descriptor*, *control edit descriptor*, *character string edit descritpro*, or repeated *format items*.
+According to the Fortran standard, the *format specification* consists of *format items*. The *format items* is an aggregation of multiple *format item*.  The *edit descriptor* is subdivided into three categories: *data edit descriptor*, *control edit descriptor*, and *character string edit descriptor*. A *format item* is one of *data edit descriptor*, *control edit descriptor*, *character string edit descriptor*, or repeated *format items*.
 
 However, users can use fed without paying attention to the differences between those types.
 
