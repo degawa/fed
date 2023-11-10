@@ -90,9 +90,9 @@ contains
         use :: strings_enclose
         implicit none
         integer(int32), intent(in) :: v_list(:)
-        ! 編集記述子の値指定並び
+            !! 編集記述子の値指定並び
         character(:), allocatable :: v_list_str
-        ! 文字列に変換され，括弧で囲まれた編集記述子の値指定並び
+            !! 文字列に変換され，括弧で囲まれた編集記述子の値指定並び
 
         integer(int32) :: i, list_size
 
