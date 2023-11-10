@@ -39,7 +39,7 @@ contains
         type(udt_edit_descriptor_type) :: new_dt_desc
             !! 生成されるインスタンス
 
-        ! 'DT(1,2,3,...)'を作成する
+        ! 'DT"iotype"'を作成する
         call new_dt_desc%set(udt_edit_descriptor_symbol &
                              //enclose(iotype, '"'))
     end function construct_user_defined_derived_type_descriptor_w_iotype
@@ -57,7 +57,7 @@ contains
             return
         end if
 
-        ! 'DT"iotype"'を作成する
+        ! 'DT(1,2,3,...)'を作成する
         call new_dt_desc%set(udt_edit_descriptor_symbol &
                              //v_list_to_string(v_list))
     end function construct_user_defined_derived_type_descriptor_w_vlist
