@@ -111,7 +111,7 @@ The current version of fed provides the following functions and operators:
     - `"(",ES<width>.<decimal_place_digits>E<exponent_digits>,",",ES<width>.<decimal_place_digits>E<exponent_digits>,")"`
     - `"(",EN<width>.<decimal_place_digits>,",",EN<width>.<decimal_place_digits>,")"`
     - `"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`
-- `str(character_string)`: reates a character string edit descriptor.
+- `str(character_string)`: creates a character string edit descriptor.
 - `array(data_edit_descriptor, {array_size/array_shape}[, separator][, bracket_open])`: creates a sequence of edit descriptors for writing an array.
 - `terminate()`: creates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list.
 - `end_line()`: creates the slash edit descriptor that ends data transfer to or from the current record.
