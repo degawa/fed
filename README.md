@@ -191,7 +191,7 @@ The current version of fed provides the following functions and operators:
 
     print stat, allocated(j)               !allocataion status: T
     print memsize, storage_size(j)*size(j) !storage size: 2464 bits
-    print fmt_bnd, lbound(j), ubound(j)    !array bounds = [  -5 -20] x [   0 -10]
+    print fmt_bnd, lbound(j), ubound(j)    !array bounds = [  -6 -20] x [   0 -10]
 
     deallocate (i)
     deallocate (j)
