@@ -113,6 +113,8 @@ The current version of fed provides the following functions and operators:
     - `"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`
 - `str(character_string)`: creates a character string edit descriptor.
 - `array(data_edit_descriptor, {array_size/array_shape}[, separator][, bracket_open])`: creates a sequence of edit descriptors for writing an array.
+- `udt([iotype][, v_list(:)])`: creates a edit desciptor for a user-defined derived type.
+    - `DT"iotype"(v_list(1), v_list(2), ...)`
 - `terminate()`: creates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list.
 - `end_line()`: creates the slash edit descriptor that ends data transfer to or from the current record.
 - `move(characters)`: creates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position.
