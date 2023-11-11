@@ -81,7 +81,7 @@ The current version of fed provides the following functions and operators:
     - `A<width>`
 - `logical([width])`: creates a edit descriptor for logiacl.
     - `L<width>`
-- `int([form={bin_digits/oct_digits/hex_digits}][, width[, zero_padding_digit]])`: creates a edit descriptor for integer.
+- `int([form={bin_digits|oct_digits|hex_digits}][, width[, zero_padding_digit]])`: creates a edit descriptor for integer.
     - `I0`
     - `I<width>`
     - `I<width>.<zero_padding_digit>`
@@ -94,7 +94,7 @@ The current version of fed provides the following functions and operators:
     - `Z0`
     - `Z<width>.<width>`
     - `Z<width>.<zero_padding_digit>`
-- `real([form={exp_form/sci_form/eng_form}][, width[, decimal_place_digits[, exponent_digits]]])`: creates a edit descriptor for real.
+- `real([form={exp_form|sci_form|eng_form}][, width[, decimal_place_digits[, exponent_digits]]])`: creates a edit descriptor for real.
     - `G0`, `F<width>.<decimal_place_digits>`
     - `E<width>.<decimal_place_digits>`
     - `E<width>.<decimal_place_digits>E<exponent_digits>`
@@ -102,7 +102,7 @@ The current version of fed provides the following functions and operators:
     - `ES<width>.<decimal_place_digits>E<exponent_digits>`
     - `EN<width>.<decimal_place_digits>`
     - `EN<width>.<decimal_place_digits>E<exponent_digits>`
-- `complex([form={exp_form/sci_form/eng_form}][, width[, decimal_place_digits[, exponent_digits]]])`: creates a sequene of edit descriptors for writing complex.
+- `complex([form={exp_form|sci_form|eng_form}][, width[, decimal_place_digits[, exponent_digits]]])`: creates a sequene of edit descriptors for writing complex.
     - `"(",G0,",",G0,")"`
     - `"(",F<width>.<decimal_place_digits>,",",F<width>.<decimal_place_digits>,")"`
     - `"(",E<width>.<decimal_place_digits>,",",E<width>.<decimal_place_digits>,")"`
@@ -112,7 +112,7 @@ The current version of fed provides the following functions and operators:
     - `"(",EN<width>.<decimal_place_digits>,",",EN<width>.<decimal_place_digits>,")"`
     - `"(",EN<width>.<decimal_place_digits>E<exponent_digits>,",",EN<width>.<decimal_place_digits>E<exponent_digits>,")"`
 - `str(character_string)`: creates a character string edit descriptor.
-- `array(data_edit_descriptor, {array_size/array_shape}[, separator][, bracket_open])`: creates a sequence of edit descriptors for writing an array.
+- `array(data_edit_descriptor, {array_size|array_shape}[, separator][, bracket_open])`: creates a sequence of edit descriptors for writing an array.
 - `udt([iotype][, v_list(:)])`: creates a edit desciptor for a user-defined derived type.
     - `DT"iotype"(v_list(1), v_list(2), ...)`
 - `terminate()`: creates the colon edit descriptor that terminates format control if there are no more effective items in the input/output list.
@@ -120,10 +120,10 @@ The current version of fed provides the following functions and operators:
 - `move(characters)`: creates the `TL abs(<characters>)` or `TR<characters>` edit descriptor that moves `<characters>` characters from the current position.
     - `characters` must not be zero.
 - `move_to(column)`: creates the `T<column>` edit descriptor that moves to `<column>`th column from the left tab limit, with the left tab limit as the 1st column.
-- `blank_mode%{null/zero}(format_items)`: creates format items with locally changed blank interpretation mode by placing `BN` or `BZ` edit descriptor before and after the `format_items`.
-- `decimal_mode%{comma/point}(format_items)`: creates format items with locally changed decimal edit mode by placing `DC` or `DP` edit descriptor before and after the `format_items`.
-- `rounding_mode%{up/down/zero/nearest/compatible/processor_defined}(format_items)`: creates format items with locally changed rounding mode by placing `RU`, `RD`, `RZ`, `RN`, `RC` or `RP` edit descriptor before and after the `format_items`.
-- `sign_mode%{suppress/plus/processor_defined}(format_items)`: creates format items with locally changed sign mode by placing `SS`, `SP`, or `S` edit descriptor before and after the `format_items`.
+- `blank_mode%{null|zero}(format_items)`: creates format items with locally changed blank interpretation mode by placing `BN` or `BZ` edit descriptor before and after the `format_items`.
+- `decimal_mode%{comma|point}(format_items)`: creates format items with locally changed decimal edit mode by placing `DC` or `DP` edit descriptor before and after the `format_items`.
+- `rounding_mode%{up|down|zero|nearest|compatible|processor_defined}(format_items)`: creates format items with locally changed rounding mode by placing `RU`, `RD`, `RZ`, `RN`, `RC` or `RP` edit descriptor before and after the `format_items`.
+- `sign_mode%{suppress|plus|processor_defined}(format_items)`: creates format items with locally changed sign mode by placing `SS`, `SP`, or `S` edit descriptor before and after the `format_items`.
 - `format(format_items[, separator])`: creates a format specification as characters.
     - The separator is placed before **data and character string edit descriptors** when `separator` is passed.
     - `separator` must not be `"`
