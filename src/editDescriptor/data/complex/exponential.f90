@@ -42,7 +42,7 @@ contains
     pure function construct_exponential_complex_spec() result(new_exp_desc)
         implicit none
         type(complex_exponential_edit_descriptor_type) :: new_exp_desc
-            !!　生成されるインスタンス
+            !! 生成されるインスタンス
 
         ! 実部と虚部の編集を行う実数型編集記述子
         type(real_exponential_edit_descriptor_type) :: real_desc
